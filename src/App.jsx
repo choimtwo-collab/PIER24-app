@@ -75,18 +75,18 @@ const SHOP_ITEMS = [
 // --- Mock Data ---
 const INITIAL_USERS = [
   {
-    id: 1,
+    id: '86645223-a009-4559-a495-e25fcce9bf31',
     name: '김동국',
     department: '의사',
     mileage2025: 2200,
     currentMileage: 450,
     records: [
-      { id: 11, type: 'monthly', period: '2026-01', distance: 150 },
-      { id: 12, type: 'monthly', period: '2026-02', distance: 180 },
-      { id: 13, type: 'monthly', period: '2026-03', distance: 120 },
+      { id: 'rec-1', type: 'monthly', period: '2026-01', distance: 150 },
+      { id: 'rec-2', type: 'monthly', period: '2026-02', distance: 180 },
+      { id: 'rec-3', type: 'monthly', period: '2026-03', distance: 120 },
     ],
     marathons: [
-      { id: 101, name: '서울국제마라톤', date: '2025-03-16', course: 'Full' }
+      { id: 'm-1', name: '서울국제마라톤', date: '2025-03-16', course: 'Full' }
     ],
     trainingAttendance: [true, true, false, true, true, true, true, true],
     badges: ['Full Course', 'Weekly Master', 'ELITE'],
@@ -95,18 +95,18 @@ const INITIAL_USERS = [
     equipped: { character: 'char_cheetah', head: 'head_goggles', body: null, pants: null, shoes: 'shoes_rocket' }
   },
   {
-    id: 2,
+    id: '86645223-a009-4559-a495-e25fcce9bf32',
     name: '이지혜',
     department: '간호사',
     mileage2025: 1200,
     currentMileage: 320,
     records: [
-      { id: 21, type: 'monthly', period: '2026-01', distance: 100 },
-      { id: 22, type: 'monthly', period: '2026-02', distance: 110 },
-      { id: 23, type: 'monthly', period: '2026-03', distance: 110 },
+      { id: 'rec-4', type: 'monthly', period: '2026-01', distance: 100 },
+      { id: 'rec-5', type: 'monthly', period: '2026-02', distance: 110 },
+      { id: 'rec-6', type: 'monthly', period: '2026-03', distance: 110 },
     ],
     marathons: [
-      { id: 102, name: '고양하프마라톤', date: '2025-03-30', course: 'Half' }
+      { id: 'm-2', name: '고양하프마라톤', date: '2025-03-30', course: 'Half' }
     ],
     trainingAttendance: [true, true, true, true, true, false, true, true],
     badges: ['Half Runner', 'Steady Runner'],
@@ -115,18 +115,18 @@ const INITIAL_USERS = [
     equipped: { character: 'char_rabbit', head: null, body: 'body_shirt', pants: 'pants_leggings', shoes: null }
   },
   {
-    id: 3,
+    id: '86645223-a009-4559-a495-e25fcce9bf33',
     name: '박철수',
     department: '행정직',
     mileage2025: 800,
     currentMileage: 280,
     records: [
-      { id: 31, type: 'monthly', period: '2026-01', distance: 80 },
-      { id: 32, type: 'monthly', period: '2026-02', distance: 90 },
-      { id: 33, type: 'monthly', period: '2026-03', distance: 110 },
+      { id: 'rec-7', type: 'monthly', period: '2026-01', distance: 80 },
+      { id: 'rec-8', type: 'monthly', period: '2026-02', distance: 90 },
+      { id: 'rec-9', type: 'monthly', period: '2026-03', distance: 110 },
     ],
     marathons: [
-      { id: 103, name: '동국대사랑10K', date: '2025-02-15', course: '10km' }
+      { id: 'm-3', name: '동국대사랑10K', date: '2025-02-15', course: '10km' }
     ],
     trainingAttendance: [true, false, true, true, false, true, true, false],
     badges: ['10K Finisher', 'Beginner Luck'],
@@ -135,15 +135,15 @@ const INITIAL_USERS = [
     equipped: { character: 'char_turtle', head: null, body: null, shoes: null }
   },
   {
-    id: 4,
+    id: '86645223-a009-4559-a495-e25fcce9bf34',
     name: '최은정',
     department: '기술직',
     mileage2025: 300,
     currentMileage: 150,
     records: [
-      { id: 41, type: 'monthly', period: '2026-01', distance: 50 },
-      { id: 42, type: 'monthly', period: '2026-02', distance: 40 },
-      { id: 43, type: 'monthly', period: '2026-03', distance: 60 },
+      { id: 'rec-10', type: 'monthly', period: '2026-01', distance: 50 },
+      { id: 'rec-11', type: 'monthly', period: '2026-02', distance: 40 },
+      { id: 'rec-12', type: 'monthly', period: '2026-03', distance: 60 },
     ],
     marathons: [],
     trainingAttendance: [true, true, true, true, true, true, true, true],
@@ -388,17 +388,18 @@ const PIER24App = () => {
 
         setUsers(formattedUsers.length > 0 ? formattedUsers : INITIAL_USERS);
       } catch (err) {
-        console.error('Supabase fetch error:', err);
+        console.error('Supabase 데이터 로딩 실패 상세:', err);
+        showToast('DB 데이터를 불러오는 데 실패했습니다. 콘솔을 확인해주세요.');
         setUsers(INITIAL_USERS);
-      }
+      } finally {   };
     };
     fetchSupabaseData();
   }, []);
 
   const currentUser = users[currentUserIndex];
   const [signupRequests, setSignupRequests] = useState([
-    { id: 1001, name: '정민수', department: '응급의학과', time: '1시간 전' },
-    { id: 1002, name: '강하늘', department: '외래간호팀', time: '3시간 전' }
+    { id: 'req-1', name: '정민수', department: '응급의학과', time: '1시간 전' },
+    { id: 'req-2', name: '강하늘', department: '외래간호팀', time: '3시간 전' }
   ]);
   const [showSignupModal, setShowSignupModal] = useState(false);
   const [signupForm, setSignupForm] = useState({ name: '', department: '' });
@@ -411,7 +412,7 @@ const PIER24App = () => {
   const [recordTab, setRecordTab] = useState('running');
   const [recordType, setRecordType] = useState('daily');
 
-  const [yearlyInput, setYearlyInput] = useState({ year: '2025', userId: 1, distance: '' });
+  const [yearlyInput, setYearlyInput] = useState({ year: '2025', userId: '86645223-a009-4559-a495-e25fcce9bf31', distance: '' });
 
   const handleUpdateUserMileage25 = async (userId, newMileage) => {
     const value = parseFloat(newMileage) || 0;
