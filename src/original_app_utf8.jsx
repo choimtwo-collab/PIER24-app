@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useMemo } from 'react';
+﻿import React, { useState, useEffect, useMemo } from 'react';
 import { 
   Trophy, 
   Target, 
@@ -49,35 +49,35 @@ import { supabase } from './supabaseClient';
 
 // --- Shop Mock Data ---
 const SHOP_ITEMS = [
-  { id: 'char_egg', name: '초보 알', type: 'character', price: 0, icon: '🥚' },
-  { id: 'char_turtle', name: '느긋한 거북이', type: 'character', price: 500, icon: '🐢' },
-  { id: 'char_rabbit', name: '점핑 토끼', type: 'character', price: 1000, icon: '🐰' },
-  { id: 'char_cheetah', name: '초고속 치타', type: 'character', price: 2000, icon: '🐆' },
-  { id: 'char_bear', name: '파워 곰돌이', type: 'character', price: 3000, icon: '🐻' },
-  { id: 'char_fox', name: '날쌘 여우', type: 'character', price: 3000, icon: '🦊' },
+  { id: 'char_egg', name: '珥덈낫 ??, type: 'character', price: 0, icon: '?쪡' },
+  { id: 'char_turtle', name: '?먭툔??嫄곕턿??, type: 'character', price: 500, icon: '?맊' },
+  { id: 'char_rabbit', name: '?먰븨 ?좊겮', type: 'character', price: 1000, icon: '?맧' },
+  { id: 'char_cheetah', name: '珥덇퀬??移섑?', type: 'character', price: 2000, icon: '?릤' },
+  { id: 'char_bear', name: '?뚯썙 怨곕룎??, type: 'character', price: 3000, icon: '?맶' },
+  { id: 'char_fox', name: '?좎뙓 ?ъ슦', type: 'character', price: 3000, icon: '?쫲' },
 
-  { id: 'head_goggles', name: '스피드 고글', type: 'head', price: 800, icon: <svg viewBox="0 0 100 100" className="w-10 h-10 drop-shadow-[2px_2px_0_#000]"><rect x="10" y="30" width="35" height="40" rx="10" fill="#00E5FF" stroke="#000" strokeWidth="6"/><rect x="55" y="30" width="35" height="40" rx="10" fill="#00E5FF" stroke="#000" strokeWidth="6"/><path d="M 45 50 L 55 50 M 10 50 L 0 50 M 90 50 L 100 50" stroke="#000" strokeWidth="6" strokeLinecap="round"/><circle cx="25" cy="45" r="5" fill="#FFF"/><circle cx="70" cy="45" r="5" fill="#FFF"/></svg> },
-  { id: 'head_cap', name: '러닝 캡', type: 'head', price: 600, icon: <svg viewBox="0 0 100 100" className="w-10 h-10 drop-shadow-[2px_2px_0_#000]"><path d="M 20 60 C 20 20, 80 20, 80 60 Z" fill="#FF3366" stroke="#000" strokeWidth="6"/><path d="M 80 60 L 100 60 L 100 70 L 20 70 L 20 60 Z" fill="#FF3366" stroke="#000" strokeWidth="6"/></svg> },
-  { id: 'head_crown', name: '챔피언 왕관', type: 'head', price: 5000, icon: <svg viewBox="0 0 100 100" className="w-10 h-10 drop-shadow-[2px_2px_0_#000]"><path d="M 10 80 L 20 30 L 40 60 L 50 20 L 60 60 L 80 30 L 90 80 Z" fill="#FFDE00" stroke="#000" strokeWidth="6" strokeLinejoin="round"/><circle cx="20" cy="20" r="6" fill="#FF3366"/><circle cx="50" cy="10" r="6" fill="#FF3366"/><circle cx="80" cy="20" r="6" fill="#FF3366"/></svg> },
+  { id: 'head_goggles', name: '?ㅽ뵾??怨좉?', type: 'head', price: 800, icon: <svg viewBox="0 0 100 100" className="w-10 h-10 drop-shadow-[2px_2px_0_#000]"><rect x="10" y="30" width="35" height="40" rx="10" fill="#00E5FF" stroke="#000" strokeWidth="6"/><rect x="55" y="30" width="35" height="40" rx="10" fill="#00E5FF" stroke="#000" strokeWidth="6"/><path d="M 45 50 L 55 50 M 10 50 L 0 50 M 90 50 L 100 50" stroke="#000" strokeWidth="6" strokeLinecap="round"/><circle cx="25" cy="45" r="5" fill="#FFF"/><circle cx="70" cy="45" r="5" fill="#FFF"/></svg> },
+  { id: 'head_cap', name: '?щ떇 罹?, type: 'head', price: 600, icon: <svg viewBox="0 0 100 100" className="w-10 h-10 drop-shadow-[2px_2px_0_#000]"><path d="M 20 60 C 20 20, 80 20, 80 60 Z" fill="#FF3366" stroke="#000" strokeWidth="6"/><path d="M 80 60 L 100 60 L 100 70 L 20 70 L 20 60 Z" fill="#FF3366" stroke="#000" strokeWidth="6"/></svg> },
+  { id: 'head_crown', name: '梨뷀뵾???뺢?', type: 'head', price: 5000, icon: <svg viewBox="0 0 100 100" className="w-10 h-10 drop-shadow-[2px_2px_0_#000]"><path d="M 10 80 L 20 30 L 40 60 L 50 20 L 60 60 L 80 30 L 90 80 Z" fill="#FFDE00" stroke="#000" strokeWidth="6" strokeLinejoin="round"/><circle cx="20" cy="20" r="6" fill="#FF3366"/><circle cx="50" cy="10" r="6" fill="#FF3366"/><circle cx="80" cy="20" r="6" fill="#FF3366"/></svg> },
 
-  { id: 'body_shirt', name: '열정 티셔츠', type: 'body', price: 1000, icon: <svg viewBox="0 0 100 100" className="w-10 h-10 drop-shadow-[2px_2px_0_#000]"><path d="M 30 20 L 70 20 L 90 40 L 80 50 L 70 40 L 70 90 L 30 90 L 30 40 L 20 50 L 10 40 Z" fill="#FF3366" stroke="#000" strokeWidth="6" strokeLinejoin="round"/></svg> },
-  { id: 'body_vest', name: '반사조끼', type: 'body', price: 1500, icon: <svg viewBox="0 0 100 100" className="w-10 h-10 drop-shadow-[2px_2px_0_#000]"><path d="M 30 20 L 70 20 L 80 90 L 20 90 Z" fill="#CCFF00" stroke="#000" strokeWidth="6" strokeLinejoin="round"/><path d="M 40 20 L 40 90 M 60 20 L 60 90" stroke="#000" strokeWidth="6"/><rect x="35" y="50" width="30" height="15" fill="#FFF" stroke="#000" strokeWidth="4"/></svg> },
+  { id: 'body_shirt', name: '?댁젙 ?곗뀛痢?, type: 'body', price: 1000, icon: <svg viewBox="0 0 100 100" className="w-10 h-10 drop-shadow-[2px_2px_0_#000]"><path d="M 30 20 L 70 20 L 90 40 L 80 50 L 70 40 L 70 90 L 30 90 L 30 40 L 20 50 L 10 40 Z" fill="#FF3366" stroke="#000" strokeWidth="6" strokeLinejoin="round"/></svg> },
+  { id: 'body_vest', name: '諛섏궗議곕겮', type: 'body', price: 1500, icon: <svg viewBox="0 0 100 100" className="w-10 h-10 drop-shadow-[2px_2px_0_#000]"><path d="M 30 20 L 70 20 L 80 90 L 20 90 Z" fill="#CCFF00" stroke="#000" strokeWidth="6" strokeLinejoin="round"/><path d="M 40 20 L 40 90 M 60 20 L 60 90" stroke="#000" strokeWidth="6"/><rect x="35" y="50" width="30" height="15" fill="#FFF" stroke="#000" strokeWidth="4"/></svg> },
 
-  { id: 'pants_shorts', name: '에어 반바지', type: 'pants', price: 800, icon: <svg viewBox="0 0 100 100" className="w-10 h-10 drop-shadow-[2px_2px_0_#000]"><path d="M 25 20 L 75 20 L 85 60 L 55 60 L 50 40 L 45 60 L 15 60 Z" fill="#FF3366" stroke="#000" strokeWidth="6" strokeLinejoin="round"/></svg> },
-  { id: 'pants_racing', name: '레이싱 쇼츠', type: 'pants', price: 1200, icon: <svg viewBox="0 0 100 100" className="w-10 h-10 drop-shadow-[2px_2px_0_#000]"><path d="M 25 20 L 75 20 L 85 50 L 70 30 L 50 50 L 30 30 L 15 50 Z" fill="#00E5FF" stroke="#000" strokeWidth="6" strokeLinejoin="round"/></svg> },
-  { id: 'pants_leggings', name: '기모 레깅스', type: 'pants', price: 1500, icon: <svg viewBox="0 0 100 100" className="w-10 h-10 drop-shadow-[2px_2px_0_#000]"><path d="M 30 20 L 70 20 L 75 90 L 55 90 L 50 40 L 45 90 L 25 90 Z" fill="#333" stroke="#000" strokeWidth="6" strokeLinejoin="round"/></svg> },
+  { id: 'pants_shorts', name: '?먯뼱 諛섎컮吏', type: 'pants', price: 800, icon: <svg viewBox="0 0 100 100" className="w-10 h-10 drop-shadow-[2px_2px_0_#000]"><path d="M 25 20 L 75 20 L 85 60 L 55 60 L 50 40 L 45 60 L 15 60 Z" fill="#FF3366" stroke="#000" strokeWidth="6" strokeLinejoin="round"/></svg> },
+  { id: 'pants_racing', name: '?덉씠???쇱툩', type: 'pants', price: 1200, icon: <svg viewBox="0 0 100 100" className="w-10 h-10 drop-shadow-[2px_2px_0_#000]"><path d="M 25 20 L 75 20 L 85 50 L 70 30 L 50 50 L 30 30 L 15 50 Z" fill="#00E5FF" stroke="#000" strokeWidth="6" strokeLinejoin="round"/></svg> },
+  { id: 'pants_leggings', name: '湲곕え ?덇퉭??, type: 'pants', price: 1500, icon: <svg viewBox="0 0 100 100" className="w-10 h-10 drop-shadow-[2px_2px_0_#000]"><path d="M 30 20 L 70 20 L 75 90 L 55 90 L 50 40 L 45 90 L 25 90 Z" fill="#333" stroke="#000" strokeWidth="6" strokeLinejoin="round"/></svg> },
 
-  { id: 'shoes_normal', name: '기본 러닝화', type: 'shoes', price: 1000, icon: <svg viewBox="0 0 100 100" className="w-10 h-10 drop-shadow-[2px_2px_0_#000]"><path d="M 20 60 C 20 40, 50 40, 60 40 L 70 50 L 90 50 C 90 70, 70 80, 50 80 L 20 80 Z" fill="#45C4FF" stroke="#000" strokeWidth="6" strokeLinejoin="round"/><path d="M 20 80 L 90 80" stroke="#000" strokeWidth="6"/></svg> },
-  { id: 'shoes_carbon', name: '카본 러닝화', type: 'shoes', price: 2500, icon: <svg viewBox="0 0 100 100" className="w-10 h-10 drop-shadow-[2px_2px_0_#000]"><path d="M 15 50 C 15 30, 45 30, 55 35 L 70 45 L 95 40 C 95 65, 80 85, 45 85 L 15 80 Z" fill="#FFDE00" stroke="#000" strokeWidth="6" strokeLinejoin="round"/><path d="M 15 80 Q 50 90 90 60" fill="none" stroke="#FF3366" strokeWidth="6"/></svg> },
-  { id: 'shoes_rocket', name: '로켓 슈즈', type: 'shoes', price: 5000, icon: <svg viewBox="0 0 100 100" className="w-10 h-10 drop-shadow-[2px_2px_0_#000]"><path d="M 10 50 L 50 20 L 90 50 L 70 80 L 30 80 Z" fill="#FF3366" stroke="#000" strokeWidth="6" strokeLinejoin="round"/><path d="M 30 80 L 50 100 L 70 80" fill="#FFDE00" stroke="#000" strokeWidth="6"/></svg> },
+  { id: 'shoes_normal', name: '湲곕낯 ?щ떇??, type: 'shoes', price: 1000, icon: <svg viewBox="0 0 100 100" className="w-10 h-10 drop-shadow-[2px_2px_0_#000]"><path d="M 20 60 C 20 40, 50 40, 60 40 L 70 50 L 90 50 C 90 70, 70 80, 50 80 L 20 80 Z" fill="#45C4FF" stroke="#000" strokeWidth="6" strokeLinejoin="round"/><path d="M 20 80 L 90 80" stroke="#000" strokeWidth="6"/></svg> },
+  { id: 'shoes_carbon', name: '移대낯 ?щ떇??, type: 'shoes', price: 2500, icon: <svg viewBox="0 0 100 100" className="w-10 h-10 drop-shadow-[2px_2px_0_#000]"><path d="M 15 50 C 15 30, 45 30, 55 35 L 70 45 L 95 40 C 95 65, 80 85, 45 85 L 15 80 Z" fill="#FFDE00" stroke="#000" strokeWidth="6" strokeLinejoin="round"/><path d="M 15 80 Q 50 90 90 60" fill="none" stroke="#FF3366" strokeWidth="6"/></svg> },
+  { id: 'shoes_rocket', name: '濡쒖폆 ?덉쫰', type: 'shoes', price: 5000, icon: <svg viewBox="0 0 100 100" className="w-10 h-10 drop-shadow-[2px_2px_0_#000]"><path d="M 10 50 L 50 20 L 90 50 L 70 80 L 30 80 Z" fill="#FF3366" stroke="#000" strokeWidth="6" strokeLinejoin="round"/><path d="M 30 80 L 50 100 L 70 80" fill="#FFDE00" stroke="#000" strokeWidth="6"/></svg> },
 ];
 
 // --- Mock Data ---
 const INITIAL_USERS = [
   {
     id: 1,
-    name: '김동국',
-    department: '의사',
+    name: '源?숆뎅',
+    department: '?섏궗',
     mileage2025: 2200,
     currentMileage: 450,
     records: [
@@ -86,7 +86,7 @@ const INITIAL_USERS = [
       { id: 13, type: 'monthly', period: '2026-03', distance: 120 },
     ],
     marathons: [
-      { id: 101, name: '서울국제마라톤', date: '2025-03-16', course: 'Full' }
+      { id: 101, name: '?쒖슱援?젣留덈씪??, date: '2025-03-16', course: 'Full' }
     ],
     trainingAttendance: [true, true, false, true, true, true, true, true],
     badges: ['Full Course', 'Weekly Master', 'ELITE'],
@@ -96,8 +96,8 @@ const INITIAL_USERS = [
   },
   {
     id: 2,
-    name: '이지혜',
-    department: '간호사',
+    name: '?댁???,
+    department: '媛꾪샇??,
     mileage2025: 1200,
     currentMileage: 320,
     records: [
@@ -106,7 +106,7 @@ const INITIAL_USERS = [
       { id: 23, type: 'monthly', period: '2026-03', distance: 110 },
     ],
     marathons: [
-      { id: 102, name: '고양하프마라톤', date: '2025-03-30', course: 'Half' }
+      { id: 102, name: '怨좎뼇?섑봽留덈씪??, date: '2025-03-30', course: 'Half' }
     ],
     trainingAttendance: [true, true, true, true, true, false, true, true],
     badges: ['Half Runner', 'Steady Runner'],
@@ -116,8 +116,8 @@ const INITIAL_USERS = [
   },
   {
     id: 3,
-    name: '박철수',
-    department: '행정직',
+    name: '諛뺤쿋??,
+    department: '?됱젙吏?,
     mileage2025: 800,
     currentMileage: 280,
     records: [
@@ -126,7 +126,7 @@ const INITIAL_USERS = [
       { id: 33, type: 'monthly', period: '2026-03', distance: 110 },
     ],
     marathons: [
-      { id: 103, name: '동국대사랑10K', date: '2025-02-15', course: '10km' }
+      { id: 103, name: '?숆뎅??щ옉10K', date: '2025-02-15', course: '10km' }
     ],
     trainingAttendance: [true, false, true, true, false, true, true, false],
     badges: ['10K Finisher', 'Beginner Luck'],
@@ -136,8 +136,8 @@ const INITIAL_USERS = [
   },
   {
     id: 4,
-    name: '최은정',
-    department: '기술직',
+    name: '理쒖???,
+    department: '湲곗닠吏?,
     mileage2025: 300,
     currentMileage: 150,
     records: [
@@ -155,12 +155,12 @@ const INITIAL_USERS = [
 ];
 
 const INITIAL_MARATHON_EVENTS = [
-  { id: 1, name: '고양특례시 하프마라톤', date: '2026-04-05', url: 'http://goyangmarathon.org/', members: 20, fullCourse: 12 }
+  { id: 1, name: '怨좎뼇?밸????섑봽留덈씪??, date: '2026-04-05', url: 'http://goyangmarathon.org/', members: 20, fullCourse: 12 }
 ];
 
 const INITIAL_SCHEDULES = [
-  { id: 1, title: '호수공원 정기 러닝', date: '2026-04-05', time: '07:00 AM', location: '일산 호수공원 관리소 앞', content: '봄꽃 만개 기념 페이스주 (6분 페이스)' },
-  { id: 2, title: '야간 시티 러닝', date: '2026-04-08', time: '07:30 PM', location: '정발산공원 입구', content: '언덕 훈련 및 코어 보강 운동' }
+  { id: 1, title: '?몄닔怨듭썝 ?뺢린 ?щ떇', date: '2026-04-05', time: '07:00 AM', location: '?쇱궛 ?몄닔怨듭썝 愿由ъ냼 ??, content: '遊꾧퐙 留뚭컻 湲곕뀗 ?섏씠?ㅼ＜ (6遺??섏씠??' },
+  { id: 2, title: '?쇨컙 ?쒗떚 ?щ떇', date: '2026-04-08', time: '07:30 PM', location: '?뺣컻?곌났???낃뎄', content: '?몃뜒 ?덈젴 諛?肄붿뼱 蹂닿컯 ?대룞' }
 ];
 
 // --- Utilities ---
@@ -176,40 +176,40 @@ const calculateDday = (targetDateStr) => {
 const calculateTierAndTarget = (mileage2025) => {
   if (mileage2025 >= 2000) {
     return { 
-      tier: '엘리트', 
+      tier: '?섎━??, 
       grade: 'ELITE', 
       level: 'Lv.4', 
       target: Math.round(mileage2025 * 1.15), 
       goal: 15,
       color: 'text-purple-600', 
       bg: 'bg-purple-100', 
-      icon: '🐆',
-      description: '상위 1% 정예 러너'
+      icon: '?릤',
+      description: '?곸쐞 1% ?뺤삁 ?щ꼫'
     };
   } else if (mileage2025 >= 1000) {
     return { 
-      tier: '마스터', 
+      tier: '留덉뒪??, 
       grade: 'MASTER', 
       level: 'Lv.3', 
       target: Math.round(mileage2025 * 1.30), 
       goal: 30,
       color: 'text-blue-600', 
       bg: 'bg-blue-100', 
-      icon: '🐰',
-      description: '숙련된 마스터 러너'
+      icon: '?맧',
+      description: '?숇젴??留덉뒪???щ꼫'
     };
   } else {
     const goalPct = 50;
     return { 
-      tier: '챌린저', 
+      tier: '梨뚮┛?', 
       grade: 'CHALLENGER', 
       level: 'Lv.2', 
       target: Math.max(Math.round(mileage2025 * 1.50), 300), 
       goal: 50,
       color: 'text-orange-600', 
       bg: 'bg-orange-100', 
-      icon: '🐢',
-      description: '열정적인 챌린저 러너'
+      icon: '?맊',
+      description: '?댁젙?곸씤 梨뚮┛? ?щ꼫'
     };
   }
 };
@@ -222,7 +222,7 @@ const AvatarRenderer = ({ user, className }) => {
   const eq = user?.equipped || { character: 'char_egg', head: null, body: null, pants: null, shoes: null };
   const getIcon = (id) => SHOP_ITEMS.find(i => i.id === id)?.icon;
   
-  const base = getIcon(eq.character) || '🥚';
+  const base = getIcon(eq.character) || '?쪡';
   const head = getIcon(eq.head);
   const body = getIcon(eq.body);
   const pants = getIcon(eq.pants);
@@ -245,8 +245,9 @@ const AvatarRenderer = ({ user, className }) => {
 };
 
 const CustomRunnerBar = (props) => {
-  const { x, y, width, height, value, radius = 5, fill = "#FFDE00" } = props;
-  if (value === undefined || isNaN(y)) return null;
+  const { x, y, width, height, value } = props;
+  const radius = 8;
+  if (!value || isNaN(y)) return null;
 
   // Ensure the text fits inside, else put it just above the bar
   const textY = height < 24 ? y - 8 : y + 20;
@@ -255,11 +256,11 @@ const CustomRunnerBar = (props) => {
     <g>
       <path 
         d={`M${x},${y + height} L${x},${y + radius} Q${x},${y} ${x + radius},${y} L${x + width - radius},${y} Q${x + width},${y} ${x + width},${y + radius} L${x + width},${y + height} Z`} 
-        fill={fill} 
+        fill="#FFDE00" 
         stroke="#000" 
         strokeWidth={3} 
       />
-      {value > 0 && <text x={x + width / 2} y={textY} fill="#000" fontSize="12" fontStyle="italic" fontWeight="900" textAnchor="middle">{value}</text>}
+      <text x={x + width / 2} y={textY} fill="#000" fontSize="14" fontWeight="900" textAnchor="middle">{value}</text>
     </g>
   );
 };
@@ -268,9 +269,9 @@ const CoinExplosion = () => {
   const [coins, setCoins] = useState([]);
 
   useEffect(() => {
-    // 50개의 커스텀 네오 브루탈리즘 코인을 생성합니다.
+    // 50媛쒖쓽 而ㅼ뒪? ?ㅼ삤 釉뚮（?덈━利?肄붿씤???앹꽦?⑸땲??
     const newCoins = Array.from({ length: 50 }).map((_, i) => {
-      const angle = (Math.random() * 120 + 30) * (Math.PI / 180); // 위쪽 부채꼴 각도
+      const angle = (Math.random() * 120 + 30) * (Math.PI / 180); // ?꾩そ 遺梨꾧섦 媛곷룄
       const velocity = Math.random() * 20 + 15;
       return {
         id: i,
@@ -291,7 +292,7 @@ const CoinExplosion = () => {
         ...c,
         x: c.x + c.vx,
         y: c.y + c.vy,
-        vy: c.y > window.innerHeight ? c.vy : c.vy + 0.8, // 중력 적용
+        vy: c.y > window.innerHeight ? c.vy : c.vy + 0.8, // 以묐젰 ?곸슜
         rotation: c.rotation + c.vr
       })));
       animationFrame = requestAnimationFrame(update);
@@ -317,7 +318,7 @@ const CoinExplosion = () => {
              transform: `translate(-50%, -50%) rotate(${c.rotation}deg)`
           }}
         >
-           {/* 코인 내부의 양각 무늬와 빛 반사(Stitch 디자인 스타일) */}
+           {/* 肄붿씤 ?대????묎컖 臾대뒳? 鍮?諛섏궗(Stitch ?붿옄???ㅽ??? */}
            <div className="w-[65%] h-[65%] border-[3px] border-black rounded-full opacity-60" />
            <div className="absolute top-[10%] left-[20%] w-[15%] h-[30%] bg-white rounded-full rotate-45 opacity-90 shadow-[1px_1px_0_#000]" />
         </div>
@@ -353,12 +354,6 @@ const PIER24App = () => {
           .select('*');
         if (mrError) throw mrError;
 
-        // Fetch all training records
-        const { data: trainingRecs, error: trError } = await supabase
-          .from('training_records')
-          .select('*');
-        if (trError) throw trError;
-
         // Map Supabase data to local app state structure
         const formattedUsers = members.map(m => ({
           id: m.id,
@@ -388,13 +383,6 @@ const PIER24App = () => {
               date: mr.date,
               course: mr.course,
               record: mr.record
-            })),
-          trainingRecords: (trainingRecs || [])
-            .filter(tr => tr.member_id === m.id)
-            .map(tr => ({
-              id: tr.id,
-              date: tr.date,
-              location: tr.location
             }))
         }));
 
@@ -409,8 +397,8 @@ const PIER24App = () => {
 
   const currentUser = users[currentUserIndex];
   const [signupRequests, setSignupRequests] = useState([
-    { id: 1001, name: '정민수', department: '응급의학과', time: '1시간 전' },
-    { id: 1002, name: '강하늘', department: '외래간호팀', time: '3시간 전' }
+    { id: 1001, name: '?뺣???, department: '?묎툒?섑븰怨?, time: '1?쒓컙 ?? },
+    { id: 1002, name: '媛뺥븯??, department: '?몃옒媛꾪샇?', time: '3?쒓컙 ?? }
   ]);
   const [showSignupModal, setShowSignupModal] = useState(false);
   const [signupForm, setSignupForm] = useState({ name: '', department: '' });
@@ -432,11 +420,11 @@ const PIER24App = () => {
   };
 
   const handleKickMember = async (userId) => {
-    if (users.length <= 1) { showToast('마지막 회원은 삭제할 수 없습니다.'); return; }
+    if (users.length <= 1) { showToast('留덉?留??뚯썝? ??젣?????놁뒿?덈떎.'); return; }
     await supabase.from('members').delete().eq('id', userId);
     setUsers(prev => prev.filter(u => u.id !== userId));
     if (currentUser.id === userId) setCurrentUserIndex(0);
-    showToast('회원이 탈퇴(강제)되었습니다.');
+    showToast('?뚯썝???덊눜(媛뺤젣)?섏뿀?듬땲??');
   };
 
   const handleApproveSignup = async (req) => {
@@ -452,7 +440,7 @@ const PIER24App = () => {
       training_attendance: []
     };
     const { data, error } = await supabase.from('members').insert(newMember).select().single();
-    if (error) { console.error(error); showToast('DB 오류가 발생했습니다.'); return; }
+    if (error) { console.error(error); showToast('DB ?ㅻ쪟媛 諛쒖깮?덉뒿?덈떎.'); return; }
     const newUser = {
       ...newMember,
       id: data.id,
@@ -463,30 +451,30 @@ const PIER24App = () => {
     };
     setUsers(prev => [...prev, newUser]);
     setSignupRequests(prev => prev.filter(r => r.id !== req.id));
-    showToast(`${req.name}님의 가입을 승인했습니다!`);
+    showToast(`${req.name}?섏쓽 媛?낆쓣 ?뱀씤?덉뒿?덈떎!`);
   };
 
   const handleRejectSignup = (reqId) => {
     setSignupRequests(prev => prev.filter(r => r.id !== reqId));
-    showToast("가입 요청을 거절했습니다.");
+    showToast("媛???붿껌??嫄곗젅?덉뒿?덈떎.");
   };
 
   const handleRequestSignup = () => {
     if (!signupForm.name || !signupForm.department) {
-      showToast("이름과 부서를 모두 입력해주세요!"); return;
+      showToast("?대쫫怨?遺?쒕? 紐⑤몢 ?낅젰?댁＜?몄슂!"); return;
     }
     setSignupRequests(prev => [...prev, {
       id: Date.now(),
       ...signupForm,
-      time: '방금 전'
+      time: '諛⑷툑 ??
     }]);
     setShowSignupModal(false);
     setSignupForm({ name: '', department: '' });
-    showToast("가입 요청이 관리자에게 전송되었습니다!");
+    showToast("媛???붿껌??愿由ъ옄?먭쾶 ?꾩넚?섏뿀?듬땲??");
   };
 
   const handleYearlyMileageUpdate = async () => {
-    if (!yearlyInput.distance) { showToast('거리를 입력해 주세요!'); return; }
+    if (!yearlyInput.distance) { showToast('嫄곕━瑜??낅젰??二쇱꽭??'); return; }
     const dist = parseFloat(yearlyInput.distance);
     const fieldKey = yearlyInput.year === '2025' ? 'mileage2025' : `mileage${yearlyInput.year}`;
     // Update state
@@ -498,7 +486,7 @@ const PIER24App = () => {
     if (yearlyInput.year === '2025') {
       await supabase.from('members').update({ mileage2025: dist }).eq('id', yearlyInput.userId);
     }
-    showToast(`${yearlyInput.year}년 마일리지가 반영되었습니다!`);
+    showToast(`${yearlyInput.year}??留덉씪由ъ?媛 諛섏쁺?섏뿀?듬땲??`);
     setYearlyInput({ ...yearlyInput, distance: '' });
   };
 
@@ -523,7 +511,7 @@ const PIER24App = () => {
   const [editingRecordId, setEditingRecordId] = useState(null);
 
   useEffect(() => {
-    // Kakao SDK 초기화 (카카오 개발자 자바스크립트 키 필요)
+    // Kakao SDK 珥덇린??(移댁뭅??媛쒕컻???먮컮?ㅽ겕由쏀듃 ???꾩슂)
     if (window.Kakao && !window.Kakao.isInitialized()) {
       try {
         window.Kakao.init('4beb04668417fd282f7b067d4942319a');
@@ -542,13 +530,8 @@ const PIER24App = () => {
     return `${d.getFullYear()}-W${currentWeek.toString().padStart(2, '0')}`;
   };
 
-  const aggregateRecords = (records, marathons = [], trainingRecords = []) => {
-    const chartData = Array.from({ length: 12 }, (_, i) => ({ 
-      month: `${i + 1}월`, 
-      distance: 0, 
-      trainingCount: 0, 
-      marathonCount: 0 
-    }));
+  const aggregateRecords = (records) => {
+    const chartData = Array.from({ length: 12 }, (_, i) => ({ month: `${i + 1}??, distance: 0 }));
     const monthGroups = {};
     
     records.forEach(r => {
@@ -582,28 +565,12 @@ const PIER24App = () => {
       const mIndex = parseInt(mStr.split('-')[1], 10) - 1;
       if (mIndex >= 0 && mIndex < 12) chartData[mIndex].distance = parseFloat(total.toFixed(1));
     });
-
-    // Count training attendance
-    (trainingRecords || []).forEach(tr => {
-      const mIdx = new Date(tr.date).getMonth();
-      if (mIdx >= 0 && mIdx < 12) chartData[mIdx].trainingCount += 1;
-    });
-
-    // Count marathon completions
-    (marathons || []).forEach(mr => {
-      const mIdx = new Date(mr.date).getMonth();
-      if (mIdx >= 0 && mIdx < 12) chartData[mIdx].marathonCount += 1;
-    });
     
     return chartData;
   };
 
   const chartLogs = useMemo(() => {
-    return aggregateRecords(
-      currentUser?.records || [], 
-      currentUser?.marathons || [], 
-      currentUser?.trainingRecords || []
-    );
+    return aggregateRecords(currentUser?.records || []);
   }, [currentUser]);
 
   const showToast = (message) => {
@@ -641,7 +608,7 @@ const PIER24App = () => {
         await supabase.from('running_records').update({ period: inputPeriod, distance, type: recordType }).eq('id', editingRecordId);
         await supabase.from('members').update({ current_mileage: newTotal, coins: newCoins }).eq('id', currentUser.id);
         setUsers(prev => prev.map((u, i) => i === currentUserIndex ? { ...u, currentMileage: newTotal, records: userRecords, coins: newCoins } : u));
-        showToast(`기록이 수정되었습니다! (${distance}km)`);
+        showToast(`湲곕줉???섏젙?섏뿀?듬땲?? (${distance}km)`);
         setEditingRecordId(null);
       }
     } else {
@@ -649,15 +616,15 @@ const PIER24App = () => {
       const { data: newRec, error } = await supabase.from('running_records')
         .insert({ member_id: currentUser.id, type: recordType, period: inputPeriod, distance })
         .select().single();
-      if (error) { console.error(error); showToast('DB 저장 오류'); return; }
+      if (error) { console.error(error); showToast('DB ????ㅻ쪟'); return; }
       userRecords.push({ id: newRec.id, type: recordType, period: inputPeriod, distance, photo: null });
       const newTotal = parseFloat(aggregateRecords(userRecords).reduce((acc, c) => acc + c.distance, 0).toFixed(1));
       const earnedCoins = Math.round(distance * 100);
       const newCoins = (currentUser.coins || 0) + earnedCoins;
       await supabase.from('members').update({ current_mileage: newTotal, coins: newCoins }).eq('id', currentUser.id);
       setUsers(prev => prev.map((u, i) => i === currentUserIndex ? { ...u, currentMileage: newTotal, records: userRecords, coins: newCoins } : u));
-      const typeLabel = recordType === 'daily' ? '일자별' : recordType === 'weekly' ? '주별' : '월별';
-      showToast(`[${typeLabel}] ${distance}km 기록 반영!`);
+      const typeLabel = recordType === 'daily' ? '?쇱옄蹂? : recordType === 'weekly' ? '二쇰퀎' : '?붾퀎';
+      showToast(`[${typeLabel}] ${distance}km 湲곕줉 諛섏쁺!`);
       handleReward(earnedCoins);
     }
 
@@ -677,7 +644,7 @@ const PIER24App = () => {
       await supabase.from('running_records').delete().eq('id', recordId);
       await supabase.from('members').update({ current_mileage: newTotal, coins: newCoins }).eq('id', currentUser.id);
       setUsers(prev => prev.map((u, i) => i === currentUserIndex ? { ...u, currentMileage: newTotal, records: userRecords, coins: newCoins } : u));
-      showToast('기록이 삭제되었습니다.');
+      showToast('湲곕줉????젣?섏뿀?듬땲??');
     }
   };
 
@@ -687,72 +654,45 @@ const PIER24App = () => {
     setInputPeriod(record.period);
     setInputDistance(record.distance.toString());
     setEditingRecordId(record.id);
-    // 스크롤 이동
+    // ?ㅽ겕濡??대룞
     window.scrollTo({ top: 800, behavior: 'smooth' });
   };
 
   const handleAddTraining = async () => {
-    if (!trainingInput.location) { showToast('장소나 훈련 내용을 입력해주세요!'); return; }
-    
-    // Save to Supabase training_records table
-    const { data: newTr, error: trError } = await supabase
-      .from('training_records')
-      .insert({
-        member_id: currentUser.id,
-        date: trainingInput.date,
-        location: trainingInput.location
-      })
-      .select()
-      .single();
-
-    if (trError) {
-      console.error(trError);
-      showToast('DB 저장 오류');
-      return;
-    }
-
+    if (!trainingInput.location) { showToast('?μ냼???덈젴 ?댁슜???낅젰?댁＜?몄슂!'); return; }
     const earnedCoins = 500;
     const newAttendance = [...(currentUser.trainingAttendance || []), true];
     const newCoins = (currentUser.coins || 0) + earnedCoins;
-    
-    // Update member's coins and local state
     await supabase.from('members').update({ training_attendance: newAttendance, coins: newCoins }).eq('id', currentUser.id);
-    
-    setUsers(prev => prev.map((u, i) => i === currentUserIndex ? { 
-      ...u, 
-      coins: newCoins, 
-      trainingAttendance: newAttendance,
-      trainingRecords: [...(u.trainingRecords || []), { id: newTr.id, date: trainingInput.date, location: trainingInput.location }]
-    } : u));
-    
-    showToast('💪 훈련 참석 등록 완!');
+    setUsers(prev => prev.map((u, i) => i === currentUserIndex ? { ...u, coins: newCoins, trainingAttendance: newAttendance } : u));
+    showToast('?뮞 ?덈젴 李몄꽍 ?깅줉 ??');
     handleReward(earnedCoins);
     setTrainingInput({ ...trainingInput, location: '' });
   };
 
   const handleAddMarathon = async () => {
-    if (!marathonInput.name) { showToast('대회명을 입력해주세요!'); return; }
+    if (!marathonInput.name) { showToast('??뚮챸???낅젰?댁＜?몄슂!'); return; }
     const earnedCoins = 3000;
     const newMarathon = { member_id: currentUser.id, name: marathonInput.name, date: marathonInput.date, course: marathonInput.distance, record: marathonInput.record };
     const { data: insertedMarathon, error } = await supabase.from('marathon_records').insert(newMarathon).select().single();
-    if (error) { console.error(error); showToast('DB 저장 오류'); return; }
+    if (error) { console.error(error); showToast('DB ????ㅻ쪟'); return; }
     const newCoins = (currentUser.coins || 0) + earnedCoins;
     await supabase.from('members').update({ coins: newCoins }).eq('id', currentUser.id);
     const localMarathon = { id: insertedMarathon.id, name: marathonInput.name, date: marathonInput.date, course: marathonInput.distance, record: marathonInput.record };
     setUsers(prev => prev.map((u, i) => i === currentUserIndex ? { ...u, coins: newCoins, marathons: [...(u.marathons || []), localMarathon] } : u));
-    showToast(`🏆 ${marathonInput.name} 완주 축하합니다!`);
+    showToast(`?룇 ${marathonInput.name} ?꾩＜ 異뺥븯?⑸땲??`);
     handleReward(earnedCoins);
     setMarathonInput({ name: '', date: todayStr, distance: '10km', record: '' });
   };
 
   const handleBuyItem = async (item) => {
-    if (currentUser.inventory.includes(item.id)) { showToast('이미 보유한 아이템입니다.'); return; }
-    if ((currentUser.coins || 0) < item.price) { showToast(`골드가 부족합니다! (필요: ${item.price}G)`); return; }
+    if (currentUser.inventory.includes(item.id)) { showToast('?대? 蹂댁쑀???꾩씠?쒖엯?덈떎.'); return; }
+    if ((currentUser.coins || 0) < item.price) { showToast(`怨⑤뱶媛 遺議깊빀?덈떎! (?꾩슂: ${item.price}G)`); return; }
     const newInventory = [...currentUser.inventory, item.id];
     const newCoins = currentUser.coins - item.price;
     await supabase.from('members').update({ inventory: newInventory, coins: newCoins }).eq('id', currentUser.id);
     setUsers(prev => prev.map((u, i) => i === currentUserIndex ? { ...u, coins: newCoins, inventory: newInventory } : u));
-    showToast(`🎉 ${item.name} 획득 완료!`);
+    showToast(`?럦 ${item.name} ?띾뱷 ?꾨즺!`);
   };
 
   const handleEquipItem = async (item) => {
@@ -760,8 +700,8 @@ const PIER24App = () => {
     const newEquipped = { ...currentUser.equipped, [item.type]: currentEquip === item.id ? null : item.id };
     await supabase.from('members').update({ equipped: newEquipped }).eq('id', currentUser.id);
     setUsers(prev => prev.map((u, i) => i === currentUserIndex ? { ...u, equipped: newEquipped } : u));
-    if (currentEquip === item.id) showToast(`${item.name} 장착을 해제했습니다.`);
-    else showToast(`${item.name} 장착 완료!`);
+    if (currentEquip === item.id) showToast(`${item.name} ?μ갑???댁젣?덉뒿?덈떎.`);
+    else showToast(`${item.name} ?μ갑 ?꾨즺!`);
   };
 
   const handleImageUploadForOCR = async (e) => {
@@ -770,35 +710,33 @@ const PIER24App = () => {
       const photoUrl = URL.createObjectURL(file);
       setUploadedRecordPhoto(photoUrl);
       setIsAnalyzing(true);
-      showToast("🔍 이미지에서 텍스트를 분석 중입니다 (Tesseract.js)...");
+      showToast("?뵇 ?대?吏?먯꽌 ?띿뒪?몃? 遺꾩꽍 以묒엯?덈떎 (Tesseract.js)...");
       
       try {
         if (typeof Tesseract === 'undefined') {
           throw new Error("OCR Library not loaded");
         }
 
-        // Tesseract.js를 사용하여 텍스트 추출
+        // Tesseract.js瑜??ъ슜?섏뿬 ?띿뒪??異붿텧
         const { data: { text } } = await Tesseract.recognize(photoUrl, 'eng', {
           // logger: m => console.log(m)
         });
         
-        console.log("OCR 원본 텍스트:", text);
+        console.log("OCR ?먮낯 ?띿뒪??", text);
         
-        // 1. "숫자 km" / "숫자.숫자 km" / "숫자,숫자 km" 패턴 찾기
-        // 정규식 개선: 만 단위까지(1234), 소수점 또는 콤마 지원, KM 뿐만 아니라 오타(KN 등) 허용
+        // 1. "?レ옄 km" / "?レ옄.?レ옄 km" / "?レ옄,?レ옄 km" ?⑦꽩 李얘린
+        // ?뺢퇋??媛쒖꽑: 留??⑥쐞源뚯?(1234), ?뚯닔???먮뒗 肄ㅻ쭏 吏?? KM 肉먮쭔 ?꾨땲???ㅽ?(KN ?? ?덉슜
         const kmPattern = /(\d{1,4}(?:[.,]\d{1,3})?)\s*(?:km|kn|kmi|k m)/gi;
         const matches = [...text.matchAll(kmPattern)];
         
         let foundDist = null;
 
         if (matches.length > 0) {
-          // 발견된 매치 중 가장 큰 수치를 총 거리로 가정
-          const distances = matches.map(m => parseFloat(m[1].replace(',', '.')));
+          // 諛쒓껄??留ㅼ튂 以?媛?????섏튂瑜?珥?嫄곕━濡?媛??          const distances = matches.map(m => parseFloat(m[1].replace(',', '.')));
           foundDist = Math.max(...distances).toString();
         } else {
-          // KM 패턴이 없을 경우 그냥 "숫자.숫자" / "숫자" 형태라도 찾음
-          // 단, 1000이 넘는 큰 숫자는 칼로리일 가능성이 높으므로 500 이하로 필터링
-          const genericPattern = /(\d{1,4}(?:\.\d{1,2})?)/g;
+          // KM ?⑦꽩???놁쓣 寃쎌슦 洹몃깷 "?レ옄.?レ옄" / "?レ옄" ?뺥깭?쇰룄 李얠쓬
+          // ?? 1000???섎뒗 ???レ옄??移쇰줈由ъ씪 媛?μ꽦???믪쑝誘濡?500 ?댄븯濡??꾪꽣留?          const genericPattern = /(\d{1,4}(?:\.\d{1,2})?)/g;
           const genericMatches = [...text.matchAll(genericPattern)];
           
           if (genericMatches.length > 0) {
@@ -812,29 +750,28 @@ const PIER24App = () => {
 
         if (foundDist) {
           setInputDistance(foundDist);
-          showToast(`✅ 분석 완료! ${foundDist}km가 입력되었습니다.`);
+          showToast(`??遺꾩꽍 ?꾨즺! ${foundDist}km媛 ?낅젰?섏뿀?듬땲??`);
         } else {
-          // 마지막 수단: 사용자 이미지의 특수 케이스 대응 (데모용)
+          // 留덉?留??섎떒: ?ъ슜???대?吏???뱀닔 耳?댁뒪 ???(?곕え??
           if (text.includes("281")) {
              setInputDistance("281");
-             showToast(`✅ 분석 완료! 281km가 입력되었습니다.`);
+             showToast(`??遺꾩꽍 ?꾨즺! 281km媛 ?낅젰?섏뿀?듬땲??`);
           } else if (text.includes("85")) {
              setInputDistance("85.93");
-             showToast(`✅ 분석 완료! 85.93km가 입력되었습니다.`);
+             showToast(`??遺꾩꽍 ?꾨즺! 85.93km媛 ?낅젰?섏뿀?듬땲??`);
           } else {
-             showToast("⚠️ 정확한 거리 수치를 찾지 못했습니다. 수동 입력을 부탁드립니다.");
+             showToast("?좑툘 ?뺥솗??嫄곕━ ?섏튂瑜?李얠? 紐삵뻽?듬땲?? ?섎룞 ?낅젰??遺?곷뱶由쎈땲??");
           }
         }
       } catch (err) {
-        console.error("OCR 분석 오류:", err);
-        // 라이브러리 로드 실패 시 데모용 지능형 시뮬레이션
-        const is281 = file.name.includes("281") || Math.random() > 0.5;
+        console.error("OCR 遺꾩꽍 ?ㅻ쪟:", err);
+        // ?쇱씠釉뚮윭由?濡쒕뱶 ?ㅽ뙣 ???곕え??吏?ν삎 ?쒕??덉씠??        const is281 = file.name.includes("281") || Math.random() > 0.5;
         const simDist = is281 ? "281" : "85.93";
         setInputDistance(simDist);
-        showToast(`✅ [데모] 분석 완료! ${simDist}km가 입력되었습니다.`);
+        showToast(`??[?곕え] 遺꾩꽍 ?꾨즺! ${simDist}km媛 ?낅젰?섏뿀?듬땲??`);
       } finally {
         setIsAnalyzing(false);
-        // 사용자 요청: 분석이 완료되면 사진 사라지게 하기
+        // ?ъ슜???붿껌: 遺꾩꽍???꾨즺?섎㈃ ?ъ쭊 ?щ씪吏寃??섍린
         setTimeout(() => setUploadedRecordPhoto(null), 1500);
       }
     }
@@ -852,13 +789,13 @@ const PIER24App = () => {
       fullCourse: Math.floor(Math.random() * 15 + 5)
     };
     setMarathonEvents([...marathonEvents, newEvent]);
-    showToast(`마라톤 일정 [${newEvent.name}] 등록 완료!`);
+    showToast(`留덈씪???쇱젙 [${newEvent.name}] ?깅줉 ?꾨즺!`);
     e.target.reset();
   };
 
   const handleDeleteMarathonEvent = (id) => {
     setMarathonEvents(marathonEvents.filter(ev => ev.id !== id));
-    showToast(`마라톤 일정이 삭제되었습니다.`);
+    showToast(`留덈씪???쇱젙????젣?섏뿀?듬땲??`);
   };
 
   const handleAddSchedule = (e) => {
@@ -873,13 +810,13 @@ const PIER24App = () => {
     };
     setSchedules([newSchedule, ...schedules]);
     
-    // 실제 카카오톡 공유 창 띄우기 (카카오 링크 API)
+    // ?ㅼ젣 移댁뭅?ㅽ넚 怨듭쑀 李??꾩슦湲?(移댁뭅??留곹겕 API)
     if (window.Kakao && window.Kakao.isInitialized()) {
       window.Kakao.Share.sendDefault({
         objectType: 'feed',
         content: {
-          title: `🏃‍♂️ [PIER24 훈련 안내] ${newSchedule.title}`,
-          description: `일시: ${newSchedule.date} ${newSchedule.time}\n장소: ${newSchedule.location}\n내용: ${newSchedule.content}`,
+          title: `?룂?띯셽截?[PIER24 ?덈젴 ?덈궡] ${newSchedule.title}`,
+          description: `?쇱떆: ${newSchedule.date} ${newSchedule.time}\n?μ냼: ${newSchedule.location}\n?댁슜: ${newSchedule.content}`,
           imageUrl: 'https://cdn.pixabay.com/photo/2014/12/20/09/18/running-573762_1280.jpg',
           link: {
             mobileWebUrl: window.location.href,
@@ -888,7 +825,7 @@ const PIER24App = () => {
         },
         buttons: [
           {
-            title: 'PIER24 앱에서 확인하기',
+            title: 'PIER24 ?깆뿉???뺤씤?섍린',
             link: {
               mobileWebUrl: window.location.href,
               webUrl: window.location.href,
@@ -896,9 +833,9 @@ const PIER24App = () => {
           },
         ],
       });
-      showToast("카카오톡으로 일정을 공유합니다!");
+      showToast("移댁뭅?ㅽ넚?쇰줈 ?쇱젙??怨듭쑀?⑸땲??");
     } else {
-      showToast("일정이 등록되었습니다. (카카오톡 연동은 API 키가 필요합니다)");
+      showToast("?쇱젙???깅줉?섏뿀?듬땲?? (移댁뭅?ㅽ넚 ?곕룞? API ?ㅺ? ?꾩슂?⑸땲??");
     }
 
     e.target.reset();
@@ -911,8 +848,8 @@ const PIER24App = () => {
       profilePic: url
     };
     setUsers(newUsers);
-    if(url) showToast("프로필 사진이 등록되었습니다!");
-    else showToast("프로필 사진이 삭제되었습니다!");
+    if(url) showToast("?꾨줈???ъ쭊???깅줉?섏뿀?듬땲??");
+    else showToast("?꾨줈???ъ쭊????젣?섏뿀?듬땲??");
   };
 
   const handleUploadPic = (e) => {
@@ -960,14 +897,14 @@ const PIER24App = () => {
         </div>
       )}
 
-      {/* 커스텀 코인 폭발 효과 (Stitch 디자인 적용) */}
+      {/* 而ㅼ뒪? 肄붿씤 ??컻 ?④낵 (Stitch ?붿옄???곸슜) */}
       {showExplosion && <CoinExplosion />}
 
-      {/* 💰 금화 획득 텍스트 팝업 (박스 제거) */}
+      {/* ?뮥 湲덊솕 ?띾뱷 ?띿뒪???앹뾽 (諛뺤뒪 ?쒓굅) */}
       {rewardPopup && (
         <div className="fixed inset-0 z-[120] flex items-center justify-center pointer-events-none">
           <h2 className="text-4xl sm:text-5xl font-black text-white text-center break-keep leading-snug animate-bounce drop-shadow-[5px_5px_0_#000]">
-            <span className="text-[#FFDE00] text-7xl drop-shadow-[5px_5px_0_#000]">{rewardPopup}</span> 금화를<br/>획득하셨습니다!
+            <span className="text-[#FFDE00] text-7xl drop-shadow-[5px_5px_0_#000]">{rewardPopup}</span> 湲덊솕瑜?br/>?띾뱷?섏뀲?듬땲??
           </h2>
         </div>
       )}
@@ -986,8 +923,7 @@ const PIER24App = () => {
             onClick={() => setShowSignupModal(true)}
             className="hidden sm:flex items-center gap-2 bg-[#45C4FF] border-4 border-black px-4 py-2 rounded-xl font-black shadow-[4px_4px_0_0_#000] active:shadow-none active:translate-y-1 hover:translate-x-[-2px] transition-all"
           >
-            <UserPlus size={18} strokeWidth={3} /> 가입신청
-          </button>
+            <UserPlus size={18} strokeWidth={3} /> 媛?낆떊泥?          </button>
           <select 
             className="bg-white border-4 border-black rounded-xl text-lg font-black px-4 py-1.5 outline-none cursor-pointer shadow-[4px_4px_0_0_#000] hover:-translate-y-1 active:translate-y-0 active:shadow-none transition-all"
             value={currentUserIndex}
@@ -1017,10 +953,8 @@ const PIER24App = () => {
                       {gradeDesc}
                     </span>
                   </div>
-                  <h2 className="text-5xl font-black tracking-tight text-black" style={{ textShadow: '2px 2px 0px #fff, 4px 4px 0px #45C4FF' }}>
-                    {currentUser ? `${currentUser.name} 님` : '로딩 중...'}
-                  </h2>
-                  <p className="text-lg font-black text-slate-600 uppercase">2025년: {currentUser?.mileage2025}km → 2026년 목표: {targetMileage26}km</p>
+                  <h2 className="text-5xl font-black tracking-tight text-black" style={{ textShadow: '2px 2px 0px #fff, 4px 4px 0px #45C4FF' }}>{currentUser?.name} ??/h2>
+                  <p className="text-lg font-black text-slate-600 uppercase">2025?? {currentUser?.mileage2025}km ??2026??紐⑺몴: {targetMileage26}km</p>
                 </div>
                 <div className="relative w-20 h-20 shrink-0 z-10 flex flex-col items-center rotate-[-3deg] hover:rotate-6 transition-transform">
                   <div className="w-20 h-20 bg-white rounded-2xl flex items-center justify-center border-4 border-black shadow-[4px_4px_0_0_#000]">
@@ -1031,7 +965,7 @@ const PIER24App = () => {
 
               <div className="mt-8 bg-slate-50 p-6 rounded-2xl border-4 border-black shadow-[4px_4px_0_0_#000] rotate-[-1deg]">
                 <div className="flex justify-between items-end mb-3">
-                  <p className="text-sm font-black text-slate-500 uppercase tracking-widest">2026 성장 목표 달성도 (+{goal}%)</p>
+                  <p className="text-sm font-black text-slate-500 uppercase tracking-widest">2026 ?깆옣 紐⑺몴 ?ъ꽦??(+{goal}%)</p>
                   <p className="text-3xl font-black text-[#FF3366]">{progressPercentToGoal}%</p>
                 </div>
                 <div className="h-8 w-full bg-white rounded-xl border-4 border-black overflow-hidden p-0.5">
@@ -1041,8 +975,8 @@ const PIER24App = () => {
                   ></div>
                 </div>
                 <div className="flex justify-between mt-3 text-sm font-black text-slate-400">
-                  <span>누적 {currentUser?.currentMileage || 0}km</span>
-                  <span>최종 목표 {targetMileage26}km</span>
+                  <span>?꾩쟻 {currentUser?.currentMileage || 0}km</span>
+                  <span>理쒖쥌 紐⑺몴 {targetMileage26}km</span>
                 </div>
               </div>
             </div>
@@ -1050,27 +984,14 @@ const PIER24App = () => {
             <div className="bg-white rounded-3xl p-6 border-4 border-black shadow-[8px_8px_0_0_#000]">
               <div className="flex justify-between items-center mb-6">
                 <h3 className="font-black text-xl text-black flex items-center gap-2">
-                  <Flame className="text-[#FF3366] drop-shadow-[2px_2px_0_#000]" fill="currentColor" /> 파워 성장 그래프
-                </h3>
+                  <Flame className="text-[#FF3366] drop-shadow-[2px_2px_0_#000]" fill="currentColor" /> ?뚯썙 ?깆옣 洹몃옒??                </h3>
               </div>
-              <div className="h-64">
+              <div className="h-48">
                 <ResponsiveContainer width="100%" height="100%">
-                  <BarChart data={chartLogs} margin={{ top: 20, right: 10, left: -20, bottom: 0 }}>
+                  <BarChart data={chartLogs}>
                     <CartesianGrid strokeDasharray="3 3" vertical={false} stroke="#000" />
-                    <XAxis dataKey="month" axisLine={false} tickLine={false} tick={{ fontSize: 11, fontWeight: 'bold' }} />
-                    <YAxis axisLine={false} tickLine={false} tick={{ fontSize: 10, fontWeight: 'bold' }} />
-                    <Tooltip 
-                      cursor={{ fill: 'rgba(0,0,0,0.05)' }}
-                      contentStyle={{ borderRadius: '16px', border: '4px solid black', fontWeight: 'black', backgroundColor: '#fff' }}
-                    />
-                    <Legend 
-                      verticalAlign="top" 
-                      align="right"
-                      wrapperStyle={{ fontSize: '10px', fontWeight: '900', paddingBottom: '20px' }} 
-                    />
-                    <Bar name="러닝 (KM)" dataKey="distance" isAnimationActive={false} shape={<CustomRunnerBar fill="#FFDE00" />} />
-                    <Bar name="훈련 (회)" dataKey="trainingCount" isAnimationActive={false} shape={<CustomRunnerBar fill="#00E5FF" />} />
-                    <Bar name="완주 (회)" dataKey="marathonCount" isAnimationActive={false} shape={<CustomRunnerBar fill="#FF3366" />} />
+                    <XAxis dataKey="month" axisLine={false} tickLine={false} tick={{ fontSize: 12, fontWeight: 'bold' }} />
+                    <Bar dataKey="distance" isAnimationActive={false} shape={<CustomRunnerBar />} />
                   </BarChart>
                 </ResponsiveContainer>
               </div>
@@ -1078,11 +999,11 @@ const PIER24App = () => {
 
             <div className="bg-white rounded-3xl p-6 border-4 border-black shadow-[8px_8px_0_0_#000]">
               <h3 className="font-black text-2xl text-black mb-4 flex items-center gap-2 uppercase tracking-tighter" style={{ textShadow: '2px 2px 0px #fff, 3px 3px 0px #00E676' }}>
-                <Footprints className="text-black fill-current drop-shadow-[2px_2px_0_#00E676]" /> 활약 기록하기
+                <Footprints className="text-black fill-current drop-shadow-[2px_2px_0_#00E676]" /> ?쒖빟 湲곕줉?섍린
               </h3>
               
               <div className="flex bg-[#F1F5F9] p-2 rounded-2xl border-4 border-black shadow-[inset_4px_4px_0_0_rgba(0,0,0,0.1)] mb-6">
-                {[{id:'running', label:'달리기'}, {id:'training', label:'훈련 참석'}, {id:'marathon', label:'마라톤 완주'}].map(t => (
+                {[{id:'running', label:'?щ━湲?}, {id:'training', label:'?덈젴 李몄꽍'}, {id:'marathon', label:'留덈씪???꾩＜'}].map(t => (
                   <button
                     key={t.id}
                     onClick={() => setRecordTab(t.id)}
@@ -1108,14 +1029,14 @@ const PIER24App = () => {
                         }}
                         className={`flex-1 py-1 text-xs font-black transition-all rounded-[0.5rem] ${recordType === t ? 'bg-black text-[#FFDE00]' : 'text-slate-400 hover:text-slate-600'}`}
                       >
-                        {t === 'daily' ? '일자별' : t === 'weekly' ? '주별' : '월별'}
+                        {t === 'daily' ? '?쇱옄蹂? : t === 'weekly' ? '二쇰퀎' : '?붾퀎'}
                       </button>
                     ))}
                   </div>
 
                   <div className="grid grid-cols-[1fr_2fr] gap-3">
                     <div className="bg-[#8AD9FF] rounded-2xl border-4 border-black p-3 flex flex-col justify-center shadow-[4px_4px_0_0_#000]">
-                      <span className="text-[10px] font-black text-black">날짜 선택</span>
+                      <span className="text-[10px] font-black text-black">?좎쭨 ?좏깮</span>
                       <input 
                         type={recordType === 'daily' ? 'date' : recordType === 'weekly' ? 'week' : 'month'}
                         className="bg-transparent font-black text-sm outline-none w-full text-black mt-1"
@@ -1125,11 +1046,11 @@ const PIER24App = () => {
                     </div>
                     <div className="relative group">
                       <div className="absolute inset-y-0 left-4 flex flex-col justify-center pointer-events-none z-10">
-                        <span className="text-[10px] font-black text-black/50 uppercase">거리 (km)</span>
+                        <span className="text-[10px] font-black text-black/50 uppercase">嫄곕━ (km)</span>
                       </div>
                       <input 
                         type="number"
-                        placeholder="얼마나 달렸나요?"
+                        placeholder="?쇰쭏???щ졇?섏슂?"
                         className={`w-full h-16 bg-white border-4 border-black shadow-[4px_4px_0_0_#000] rounded-2xl pl-4 pr-16 font-black text-3xl text-right outline-none placeholder:text-slate-200 focus:shadow-[6px_6px_0_0_#00E676] transition-all ${isAnalyzing ? 'animate-pulse bg-slate-50' : ''}`}
                         value={inputDistance}
                         onChange={(e) => setInputDistance(e.target.value)}
@@ -1137,7 +1058,7 @@ const PIER24App = () => {
                       <label className="absolute right-2 top-2 bottom-2 aspect-square bg-[#00E676] rounded-xl border-4 border-black shadow-[2px_2px_0_0_#000] flex items-center justify-center text-black hover:bg-[#00c968] active:translate-y-1 active:shadow-none transition-all cursor-pointer group">
                         {isAnalyzing ? (
                           <div className="flex flex-col items-center">
-                            <span className="animate-spin text-lg">⚙️</span>
+                            <span className="animate-spin text-lg">?숋툘</span>
                             <span className="text-[8px] font-black mt-0.5">SCAN</span>
                           </div>
                         ) : (
@@ -1150,14 +1071,14 @@ const PIER24App = () => {
                     </div>
                   </div>
 
-                  {/* 업로드된 사진 미리보기 영역 */}
+                  {/* ?낅줈?쒕맂 ?ъ쭊 誘몃━蹂닿린 ?곸뿭 */}
                   {uploadedRecordPhoto && (
                     <div className="relative w-full aspect-video bg-black rounded-2xl border-4 border-black overflow-hidden shadow-[4px_4px_0_0_#000] animate-in zoom-in-95 duration-300">
                       <img src={uploadedRecordPhoto} className="w-full h-full object-cover opacity-80" alt="Record preview" />
                       <div className="absolute inset-0 flex items-center justify-center pointer-events-none">
                         <div className="bg-white/90 border-4 border-black px-4 py-2 rounded-xl shadow-[4px_4px_0_0_#000] rotate-[-2deg]">
                           <span className="text-black font-black flex items-center gap-2">
-                             {isAnalyzing ? "🔍 분석 중..." : "✅ 분석 완료!"}
+                             {isAnalyzing ? "?뵇 遺꾩꽍 以?.." : "??遺꾩꽍 ?꾨즺!"}
                           </span>
                         </div>
                       </div>
@@ -1176,7 +1097,7 @@ const PIER24App = () => {
                     className={`w-full ${editingRecordId ? 'bg-orange-500' : 'bg-black'} text-[#FFDE00] font-black py-4 rounded-2xl text-lg flex items-center justify-center gap-2 border-b-8 ${editingRecordId ? 'border-orange-700' : 'border-slate-800'} disabled:opacity-50 disabled:border-b-0 disabled:translate-y-2 active:border-b-0 active:translate-y-2 transition-all hover:text-white`}
                   >
                     <Footprints size={20} />
-                    {editingRecordId ? '기록 수정 완료하기' : '성장 기록하기 (+100G)'}
+                    {editingRecordId ? '湲곕줉 ?섏젙 ?꾨즺?섍린' : '?깆옣 湲곕줉?섍린 (+100G)'}
                   </button>
                   {editingRecordId && (
                     <button 
@@ -1186,7 +1107,7 @@ const PIER24App = () => {
                       }}
                       className="w-full bg-white text-slate-400 font-bold py-2 rounded-xl text-sm"
                     >
-                      수정 취소
+                      ?섏젙 痍⑥냼
                     </button>
                   )}
                 </div>
@@ -1196,16 +1117,16 @@ const PIER24App = () => {
                 <div className="space-y-4">
                   <div className="grid grid-cols-2 gap-3">
                     <div className="bg-[#8AD9FF] rounded-2xl border-4 border-black p-3 shadow-[4px_4px_0_0_#000]">
-                      <span className="text-[10px] font-black">날짜</span>
+                      <span className="text-[10px] font-black">?좎쭨</span>
                       <input type="date" className="bg-transparent font-black w-full outline-none mt-1" value={trainingInput.date} onChange={(e)=>setTrainingInput({...trainingInput, date: e.target.value})} />
                     </div>
                     <div className="bg-[#8AD9FF] rounded-2xl border-4 border-black p-3 shadow-[4px_4px_0_0_#000]">
-                      <span className="text-[10px] font-black">장소/내용</span>
-                      <input type="text" placeholder="예: 호수공원" className="bg-transparent font-black w-full outline-none mt-1" value={trainingInput.location} onChange={(e)=>setTrainingInput({...trainingInput, location: e.target.value})} />
+                      <span className="text-[10px] font-black">?μ냼/?댁슜</span>
+                      <input type="text" placeholder="?? ?몄닔怨듭썝" className="bg-transparent font-black w-full outline-none mt-1" value={trainingInput.location} onChange={(e)=>setTrainingInput({...trainingInput, location: e.target.value})} />
                     </div>
                   </div>
                   <button onClick={handleAddTraining} className="w-full bg-black text-[#FF3366] font-black py-4 rounded-2xl text-lg flex justify-center border-b-8 border-slate-800 active:border-b-0 active:translate-y-2 transition-all">
-                    훈련 참석 스탬프 찍기 (+500G)
+                    ?덈젴 李몄꽍 ?ㅽ꺃??李띻린 (+500G)
                   </button>
                 </div>
               )}
@@ -1213,16 +1134,16 @@ const PIER24App = () => {
               {recordTab === 'marathon' && (
                 <div className="space-y-4">
                   <div className="bg-[#F1F5F9] rounded-2xl border-4 border-black p-3 shadow-[4px_4px_0_0_#000]">
-                    <span className="text-[10px] font-black uppercase text-slate-500">대회명</span>
-                    <input type="text" placeholder="예: 춘천 마라톤" className="bg-transparent w-full font-black text-lg outline-none mt-1" value={marathonInput.name} onChange={(e)=>setMarathonInput({...marathonInput, name: e.target.value})} />
+                    <span className="text-[10px] font-black uppercase text-slate-500">??뚮챸</span>
+                    <input type="text" placeholder="?? 異섏쿇 留덈씪?? className="bg-transparent w-full font-black text-lg outline-none mt-1" value={marathonInput.name} onChange={(e)=>setMarathonInput({...marathonInput, name: e.target.value})} />
                   </div>
                   <div className="grid grid-cols-2 gap-3">
                     <div className="bg-white rounded-2xl border-4 border-black p-3 shadow-[4px_4px_0_0_#000]">
-                      <span className="text-[10px] font-black text-slate-500 uppercase">날짜</span>
+                      <span className="text-[10px] font-black text-slate-500 uppercase">?좎쭨</span>
                       <input type="date" className="bg-transparent font-black w-full outline-none mt-1" value={marathonInput.date} onChange={(e)=>setMarathonInput({...marathonInput, date: e.target.value})} />
                     </div>
                     <div className="bg-white rounded-2xl border-4 border-black p-3 shadow-[4px_4px_0_0_#000]">
-                      <span className="text-[10px] font-black text-slate-500 uppercase">코스거리</span>
+                      <span className="text-[10px] font-black text-slate-500 uppercase">肄붿뒪嫄곕━</span>
                       <select className="bg-transparent font-black w-full outline-none mt-1" value={marathonInput.distance} onChange={(e)=>setMarathonInput({...marathonInput, distance: e.target.value})}>
                         <option value="Full">Full (42.195km)</option>
                         <option value="Half">Half (21.0975km)</option>
@@ -1233,17 +1154,17 @@ const PIER24App = () => {
                   </div>
                   <div className="grid grid-cols-[1fr_auto] gap-3">
                     <div className="bg-white rounded-2xl border-4 border-black p-3 shadow-[4px_4px_0_0_#000]">
-                      <span className="text-[10px] font-black text-slate-500 uppercase">기록 (건타임/넷타임)</span>
+                      <span className="text-[10px] font-black text-slate-500 uppercase">湲곕줉 (嫄댄????룻???</span>
                       <input type="text" placeholder="00:00:00" className="bg-transparent font-black text-lg w-full outline-none mt-1 focus:text-blue-600 transition-colors" value={marathonInput.record} onChange={(e)=>setMarathonInput({...marathonInput, record: e.target.value})} />
                     </div>
                     <button className="bg-[#00E676] rounded-2xl border-4 border-black px-4 shadow-[4px_4px_0_0_#000] flex flex-col items-center justify-center font-black active:translate-y-1 transition-transform relative overflow-hidden group hover:bg-[#00c968]">
                       <Camera size={20} className="group-hover:scale-110 transition-transform"/>
-                      <span className="text-[10px] mt-1 text-slate-900">기록증 사진</span>
-                      <input type="file" className="absolute inset-0 opacity-0 cursor-pointer" onChange={() => showToast('📸 인증 업로드 완료!')} />
+                      <span className="text-[10px] mt-1 text-slate-900">湲곕줉利??ъ쭊</span>
+                      <input type="file" className="absolute inset-0 opacity-0 cursor-pointer" onChange={() => showToast('?벝 ?몄쬆 ?낅줈???꾨즺!')} />
                     </button>
                   </div>
                   <button onClick={handleAddMarathon} className="w-full bg-[#FFDE00] text-black font-black py-4 rounded-2xl text-lg flex justify-center border-4 border-black shadow-[4px_4px_0_0_#000] active:shadow-none active:translate-y-1 transition-all">
-                    자랑스러운 완주 등록! (+3000G)
+                    ?먮옉?ㅻ윭???꾩＜ ?깅줉! (+3000G)
                   </button>
                 </div>
               )}
@@ -1253,81 +1174,58 @@ const PIER24App = () => {
             <div className="mt-8 space-y-6 animate-in fade-in slide-in-from-bottom-4 duration-700">
               <div className="flex items-center justify-between px-2">
                 <h3 className="font-black text-2xl text-black flex items-center gap-2 uppercase tracking-tighter" style={{ textShadow: '2px 2px 0px #8AD9FF' }}>
-                  <Calendar className="text-blue-600 drop-shadow-[2px_2px_0_#000]" /> 최근 활동 일지
+                  <Calendar className="text-blue-600 drop-shadow-[2px_2px_0_#000]" /> 理쒓렐 ?쒕룞 ?쇱?
                 </h3>
-                <span className="bg-blue-100 text-blue-600 px-3 py-1 rounded-full text-xs font-black border-2 border-blue-200">UNIFIED FEED</span>
+                <span className="bg-blue-100 text-blue-600 px-3 py-1 rounded-full text-xs font-black border-2 border-blue-200">RECENT 5</span>
               </div>
               
               <div className="space-y-4">
-                {(() => {
-                  const allRecords = [
-                    ...(currentUser?.records || []).map(r => ({ ...r, eventType: 'running', sortDate: r.period })),
-                    ...(currentUser?.marathons || []).map(m => ({ ...m, eventType: 'marathon', sortDate: m.date })),
-                    ...(currentUser?.trainingRecords || []).map(t => ({ ...t, eventType: 'training', sortDate: t.date }))
-                  ].sort((a, b) => new Date(b.sortDate) - new Date(a.sortDate));
-
-                  if (allRecords.length === 0) {
-                    return (
-                      <div className="text-center py-16 bg-white/50 border-4 border-dashed border-slate-300 rounded-[2.5rem] flex flex-col items-center gap-3">
-                        <div className="w-16 h-16 bg-slate-100 rounded-full flex items-center justify-center text-slate-300">
-                          <FileText size={32} />
-                        </div>
-                        <p className="text-slate-400 font-black text-lg">아직 기록이 없습니다.<br/>첫 활동을 등록해보세요!</p>
+                {(currentUser?.records || []).slice().reverse().slice(0, 5).map(record => (
+                  <div key={record.id} className="group bg-white border-4 border-black rounded-3xl p-5 flex justify-between items-center shadow-[6px_6px_0_0_#000] hover:translate-x-2 transition-all relative overflow-hidden">
+                    <div className={`absolute top-0 left-0 w-2 h-full ${record.type === 'daily' ? 'bg-[#00E676]' : record.type === 'weekly' ? 'bg-[#FFDE00]' : 'bg-[#45C4FF]'}`} />
+                    <div className="flex items-center gap-5">
+                      <div className={`w-14 h-14 rounded-2xl border-4 border-black flex items-center justify-center text-2xl shadow-[3px_3px_0_0_#000] transition-transform group-hover:rotate-6 ${
+                        record.type === 'daily' ? 'bg-[#E8F5E9] text-green-700' : 
+                        record.type === 'weekly' ? 'bg-[#FFF9C4] text-orange-700' : 
+                        'bg-[#E1F5FE] text-blue-700'
+                      }`}>
+                        {record.type === 'daily' ? 'D' : record.type === 'weekly' ? 'W' : 'M'}
                       </div>
-                    );
-                  }
-
-                  return allRecords.slice(0, 7).map(ev => (
-                    <div key={`${ev.eventType}-${ev.id}`} className="group bg-white border-4 border-black rounded-3xl p-5 flex justify-between items-center shadow-[6px_6px_0_0_#000] hover:translate-x-2 transition-all relative overflow-hidden">
-                      <div className={`absolute top-0 left-0 w-2 h-full ${
-                        ev.eventType === 'running' ? 'bg-[#00E676]' : 
-                        ev.eventType === 'marathon' ? 'bg-[#FF3366]' : 'bg-[#00E5FF]'
-                      }`} />
-                      <div className="flex items-center gap-5">
-                        <div className={`w-14 h-14 rounded-2xl border-4 border-black flex items-center justify-center text-2xl shadow-[3px_3px_0_0_#000] transition-transform group-hover:rotate-6 ${
-                          ev.eventType === 'running' ? 'bg-[#E8F5E9] text-green-700' : 
-                          ev.eventType === 'marathon' ? 'bg-[#FCE4EC] text-pink-700' : 
-                          'bg-[#E0F7FA] text-cyan-700'
-                        }`}>
-                          {ev.eventType === 'running' ? <Footprints /> : ev.eventType === 'marathon' ? <Trophy /> : <CheckSquare />}
+                      <div>
+                        <div className="flex items-center gap-2 mb-1">
+                          <span className="text-xs font-black text-slate-400">{record.period}</span>
+                          <span className="w-1 h-1 bg-slate-200 rounded-full" />
+                          <span className="text-[10px] font-black uppercase text-slate-400 tracking-widest">{record.type === 'daily' ? '?쇱옄蹂? : record.type === 'weekly' ? '二쇰퀎' : '?붾퀎'}</span>
                         </div>
-                        <div>
-                          <div className="flex items-center gap-2 mb-1">
-                            <span className="text-xs font-black text-slate-400">{ev.sortDate}</span>
-                            <span className="w-1 h-1 bg-slate-200 rounded-full" />
-                            <span className="text-[10px] font-black uppercase text-slate-400 tracking-widest">
-                              {ev.eventType === 'running' ? '러닝' : ev.eventType === 'marathon' ? '마라톤' : '정기 훈련'}
-                            </span>
-                          </div>
-                          <p className="text-xl font-black tracking-tighter text-black">
-                            {ev.eventType === 'running' ? `${ev.distance} KM` : ev.eventType === 'marathon' ? ev.name : ev.location}
-                          </p>
-                        </div>
-                      </div>
-                      <div className="flex gap-3">
-                        <button 
-                          onClick={async () => {
-                            if (ev.eventType === 'running') {
-                              await handleDeleteRecord(ev.id);
-                            } else if (ev.eventType === 'marathon') {
-                              await supabase.from('marathon_records').delete().eq('id', ev.id);
-                              setUsers(prev => prev.map(u => u.id === currentUser.id ? { ...u, marathons: u.marathons.filter(m => m.id !== ev.id) } : u));
-                              showToast('마라톤 기록 삭제됨');
-                            } else if (ev.eventType === 'training') {
-                              await supabase.from('training_records').delete().eq('id', ev.id);
-                              setUsers(prev => prev.map(u => u.id === currentUser.id ? { ...u, trainingRecords: u.trainingRecords.filter(t => t.id !== ev.id) } : u));
-                              showToast('훈련 기록 삭제됨');
-                            }
-                          }}
-                          className="w-12 h-12 bg-white border-4 border-black rounded-xl flex items-center justify-center hover:bg-black hover:text-[#FF3366] transition-all hover:rotate-6 shadow-[2px_2px_0_0_#000] active:shadow-none active:translate-y-1 group/del"
-                          title="삭제"
-                        >
-                          <Trash2 size={20} className="text-red-500 group-hover/del:text-[#FF3366]" strokeWidth={3} />
-                        </button>
+                        <p className="text-3xl font-black tracking-tighter text-black">{record.distance} <span className="text-lg text-slate-300">KM</span></p>
                       </div>
                     </div>
-                  ));
-                })()}
+                    <div className="flex gap-3">
+                      <button 
+                        onClick={() => startEditRecord(record)}
+                        className="w-12 h-12 bg-white border-4 border-black rounded-xl flex items-center justify-center hover:bg-black hover:text-[#FFDE00] transition-all hover:-rotate-6 shadow-[2px_2px_0_0_#000] active:shadow-none active:translate-y-1"
+                        title="?섏젙"
+                      >
+                        <Settings size={20} strokeWidth={3} />
+                      </button>
+                      <button 
+                        onClick={() => handleDeleteRecord(record.id)}
+                        className="w-12 h-12 bg-white border-4 border-black rounded-xl flex items-center justify-center hover:bg-black hover:text-[#FF3366] transition-all hover:rotate-6 shadow-[2px_2px_0_0_#000] active:shadow-none active:translate-y-1 group/del"
+                        title="??젣"
+                      >
+                        <Trash2 size={20} className="text-red-500 group-hover/del:text-[#FF3366]" strokeWidth={3} />
+                      </button>
+                    </div>
+                  </div>
+                ))}
+                {(currentUser?.records || []).length === 0 && (
+                  <div className="text-center py-16 bg-white/50 border-4 border-dashed border-slate-300 rounded-[2.5rem] flex flex-col items-center gap-3">
+                    <div className="w-16 h-16 bg-slate-100 rounded-full flex items-center justify-center text-slate-300">
+                      <FileText size={32} />
+                    </div>
+                    <p className="text-slate-400 font-black text-lg">?꾩쭅 湲곕줉???놁뒿?덈떎.<br/>泥??щ━湲곕? ?깅줉??蹂댁꽭??</p>
+                  </div>
+                )}
               </div>
             </div>
           </div>
@@ -1337,7 +1235,7 @@ const PIER24App = () => {
           <div className="space-y-6 animate-in fade-in slide-in-from-bottom-2 duration-500">
             <div className="bg-white rounded-3xl p-6 border-4 border-black shadow-[8px_8px_0_0_#000] space-y-4">
               <h3 className="font-black text-2xl text-black flex items-center gap-2 uppercase tracking-tighter" style={{ textShadow: '2px 2px 0px #00E676' }}>
-                <Users className="text-black" /> 시즌 랭킹
+                <Users className="text-black" /> ?쒖쫵 ??궧
               </h3>
               <div className="space-y-4">
                 {[...users]
@@ -1366,7 +1264,7 @@ const PIER24App = () => {
                               {level} {tier}
                             </span>
                           </h4>
-                          <p className="text-sm font-bold text-slate-400">올해 {user.currentMileage || 0}km 달성 중</p>
+                          <p className="text-sm font-bold text-slate-400">?ы빐 {user.currentMileage || 0}km ?ъ꽦 以?/p>
                         </div>
                         <div className="text-right">
                           <p className="font-black text-2xl text-slate-800 tracking-tighter">{user.currentMileage || 0} km</p>
@@ -1381,7 +1279,7 @@ const PIER24App = () => {
               </div>
             </div>
 
-            {/* --- Coming Event (D-5 이하만 표시) --- */}
+            {/* --- Coming Event (D-5 ?댄븯留??쒖떆) --- */}
             {marathonEvents
               .map(ev => ({ ...ev, dDay: calculateDday(ev.date) }))
               .filter(ev => ev.dDay >= 0 && ev.dDay <= 5)
@@ -1420,7 +1318,7 @@ const PIER24App = () => {
             <div className="bg-[#FFDE00] rounded-[2rem] p-6 border-4 border-black shadow-[8px_8px_0_0_#000] flex justify-between items-center rotate-[-1deg]">
               <div>
                 <h2 className="text-3xl font-black italic tracking-tighter text-black uppercase" style={{ WebkitTextStroke: '1px black', textShadow: '2px 2px 0 #fff' }}>ITEM SHOP</h2>
-                <p className="text-xs font-black mt-1 text-black">러닝 기록으로 골드를 모아 캐릭터를 꾸며보세요!</p>
+                <p className="text-xs font-black mt-1 text-black">?щ떇 湲곕줉?쇰줈 怨⑤뱶瑜?紐⑥븘 罹먮┃?곕? 袁몃ŉ蹂댁꽭??</p>
               </div>
               <div className="bg-white px-4 py-2 rounded-2xl flex items-center gap-2 border-4 border-black shadow-[4px_4px_0_0_#000] rotate-[3deg]">
                 <Coins size={24} className="text-[#FFDE00] drop-shadow-[1px_1px_0_#000]" fill="currentColor" />
@@ -1434,15 +1332,15 @@ const PIER24App = () => {
                 <AvatarRenderer user={currentUser} className="w-full h-full text-[72px]" />
               </div>
               <div className="w-full bg-white rounded-2xl p-4 border-4 border-black shadow-[4px_4px_0_0_#000]">
-                <h3 className="font-black text-2xl text-black uppercase tracking-widest mb-2" style={{ textShadow: '2px 2px 0px #FFDE00' }}>나의 아바타</h3>
-                <p className="text-xs text-slate-500 font-black mb-4">{currentUser?.profilePic ? '현재 실제 사진을 사용 중입니다.' : '장착 중인 아이템'}</p>
+                <h3 className="font-black text-2xl text-black uppercase tracking-widest mb-2" style={{ textShadow: '2px 2px 0px #FFDE00' }}>?섏쓽 ?꾨컮?</h3>
+                <p className="text-xs text-slate-500 font-black mb-4">{currentUser?.profilePic ? '?꾩옱 ?ㅼ젣 ?ъ쭊???ъ슜 以묒엯?덈떎.' : '?μ갑 以묒씤 ?꾩씠??}</p>
                 {!currentUser?.profilePic && (
                   <div className="flex justify-center gap-3">
                     {['character', 'head', 'body', 'pants', 'shoes'].map(t => {
                       const eqId = currentUser?.equipped?.[t];
                       const it = SHOP_ITEMS.find(i => i.id === eqId);
                       return (
-                        <div key={t} className="w-14 h-14 bg-[#F1F5F9] rounded-2xl flex items-center justify-center text-3xl border-4 border-black shadow-[4px_4px_0_0_#000] rotate-2 hover:rotate-6 transition-transform" title={it?.name || '미장착'}>
+                        <div key={t} className="w-14 h-14 bg-[#F1F5F9] rounded-2xl flex items-center justify-center text-3xl border-4 border-black shadow-[4px_4px_0_0_#000] rotate-2 hover:rotate-6 transition-transform" title={it?.name || '誘몄옣李?}>
                           {it ? it.icon : '?'}
                         </div>
                       )
@@ -1455,7 +1353,7 @@ const PIER24App = () => {
             {/* Shop Categories */}
             {['character', 'head', 'body', 'pants', 'shoes'].map(category => {
               const categoryItems = SHOP_ITEMS.filter(i => i.type === category);
-              const catNames = { character: '캐릭터', head: '모자 & 고글', body: '러닝복(상의)', pants: '러닝복(하의)', shoes: '러닝화' };
+              const catNames = { character: '罹먮┃??, head: '紐⑥옄 & 怨좉?', body: '?щ떇蹂??곸쓽)', pants: '?щ떇蹂??섏쓽)', shoes: '?щ떇?? };
               
               return (
                 <div key={category} className="space-y-4 bg-white p-6 rounded-3xl border-4 border-black shadow-[8px_8px_0_0_#000]">
@@ -1475,14 +1373,14 @@ const PIER24App = () => {
                               onClick={() => handleEquipItem(item)}
                               className={`w-full py-2.5 rounded-xl text-xs font-black border-4 border-black transition-all active:translate-y-1 active:shadow-none ${isEquipped ? 'bg-[#FF3366] text-white shadow-[2px_2px_0_0_#000]' : 'bg-white text-black shadow-[2px_2px_0_0_#000]'}`}
                             >
-                              {isEquipped ? '장착 중' : '장착하기'}
+                              {isEquipped ? '?μ갑 以? : '?μ갑?섍린'}
                             </button>
                           ) : (
                             <button 
                               onClick={() => handleBuyItem(item)}
                               className="w-full py-2.5 rounded-xl text-xs font-black bg-[#FFDE00] text-black border-4 border-black transition-all flex justify-center items-center gap-1 shadow-[2px_2px_0_0_#000] active:translate-y-1 active:shadow-none hover:bg-[#ffea00]"
                             >
-                              <Coins size={14} /> {item.price}G 구매
+                              <Coins size={14} /> {item.price}G 援щℓ
                             </button>
                           )}
                         </div>
@@ -1502,9 +1400,9 @@ const PIER24App = () => {
             {/* Admin Subheader with Tabs */}
             <div className="flex gap-2 mb-4 bg-slate-100 p-2 rounded-2xl border-4 border-black shadow-[4px_4px_0_0_#000]">
               {[
-                { id: 'members', label: '회원/탈퇴', icon: Users },
-                { id: 'requests', label: '가입승인', icon: UserPlus, count: signupRequests.length },
-                { id: 'yearly', label: '통합기록', icon: Calendar }
+                { id: 'members', label: '?뚯썝/?덊눜', icon: Users },
+                { id: 'requests', label: '媛?낆듅??, icon: UserPlus, count: signupRequests.length },
+                { id: 'yearly', label: '?듯빀湲곕줉', icon: Calendar }
               ].map(sub => (
                 <button
                   key={sub.id}
@@ -1522,8 +1420,7 @@ const PIER24App = () => {
               <div className="space-y-6">
                 <div className="bg-white rounded-3xl p-6 border-4 border-black shadow-[8px_8px_0_0_#000] space-y-4">
                   <h3 className="font-black text-2xl text-black flex items-center gap-2">
-                    <Settings className="text-black" strokeWidth={3} /> 회원 및 강제탈퇴 관리
-                  </h3>
+                    <Settings className="text-black" strokeWidth={3} /> ?뚯썝 諛?媛뺤젣?덊눜 愿由?                  </h3>
                   <div className="space-y-3">
                     {users.map((user) => {
                       const { tier, bg, color } = calculateTierAndTarget(user.mileage2025 || 0);
@@ -1554,7 +1451,7 @@ const PIER24App = () => {
                             <button 
                               onClick={() => handleKickMember(user.id)}
                               className="bg-white border-2 border-black p-2 rounded-lg text-red-500 hover:bg-red-50 shadow-[2px_2px_0_0_#000] active:shadow-none active:translate-y-0.5 transition-all"
-                              title="강제탈퇴"
+                              title="媛뺤젣?덊눜"
                             >
                               <Trash2 size={18} strokeWidth={3} />
                             </button>
@@ -1568,7 +1465,7 @@ const PIER24App = () => {
                 {/* --- Training Schedules preservation --- */}
                 <div className="bg-white rounded-3xl p-6 border-4 border-black shadow-[8px_8px_0_0_#000] space-y-4">
                   <h3 className="font-black text-2xl text-black flex items-center gap-2">
-                    <Calendar className="text-indigo-600" strokeWidth={3} /> 등록된 훈련 일정
+                    <Calendar className="text-indigo-600" strokeWidth={3} /> ?깅줉???덈젴 ?쇱젙
                   </h3>
                   <div className="space-y-4">
                     {schedules.map(s => (
@@ -1580,7 +1477,7 @@ const PIER24App = () => {
                         <div className="flex-1">
                           <h4 className="font-black text-slate-800 text-sm leading-tight">{s.title}</h4>
                           <p className="text-[10px] font-bold text-slate-400 flex items-center gap-1 mt-0.5">
-                            <MapPin size={10} className="text-blue-400" /> {s.location} · {s.time}
+                            <MapPin size={10} className="text-blue-400" /> {s.location} 쨌 {s.time}
                           </p>
                         </div>
                         <ChevronRight className="text-slate-200 self-center" size={16} />
@@ -1594,7 +1491,7 @@ const PIER24App = () => {
             {adminSubTab === 'requests' && (
               <div className="bg-white rounded-3xl p-6 border-4 border-black shadow-[8px_8px_0_0_#000] space-y-4">
                 <h3 className="font-black text-2xl text-black flex items-center gap-2">
-                  <UserPlus className="text-blue-500" strokeWidth={3} /> 신규 가입 승인 요청
+                  <UserPlus className="text-blue-500" strokeWidth={3} /> ?좉퇋 媛???뱀씤 ?붿껌
                 </h3>
                 <div className="space-y-4">
                   {signupRequests.map((req) => (
@@ -1611,13 +1508,13 @@ const PIER24App = () => {
                           onClick={() => handleApproveSignup(req)}
                           className="bg-[#00E676] border-4 border-black px-4 py-2 rounded-xl font-black shadow-[2px_2px_0_0_#000] active:shadow-none active:translate-y-0.5 hover:translate-x-[-2px] transition-all"
                         >
-                          승인
+                          ?뱀씤
                         </button>
                         <button 
                           onClick={() => handleRejectSignup(req.id)}
                           className="bg-white border-4 border-black px-4 py-2 rounded-xl font-black text-slate-400 shadow-[2px_2px_0_0_#000] active:shadow-none active:translate-y-0.5 hover:bg-slate-50 transition-all"
                         >
-                          거절
+                          嫄곗젅
                         </button>
                       </div>
                     </div>
@@ -1625,7 +1522,7 @@ const PIER24App = () => {
                   {signupRequests.length === 0 && (
                     <div className="text-center py-20 bg-slate-50 border-4 border-dashed border-slate-200 rounded-[2.5rem]">
                       <UserPlus size={48} className="mx-auto text-slate-200 mb-3" />
-                      <p className="text-slate-400 font-black">대기 중인 가입 요청이 없습니다.</p>
+                      <p className="text-slate-400 font-black">?湲?以묒씤 媛???붿껌???놁뒿?덈떎.</p>
                     </div>
                   )}
                 </div>
@@ -1635,24 +1532,24 @@ const PIER24App = () => {
             {adminSubTab === 'yearly' && (
               <div className="bg-white rounded-3xl p-6 border-4 border-black shadow-[8px_8px_0_0_#000] space-y-6">
                 <h3 className="font-black text-2xl text-black flex items-center gap-2">
-                  <Calendar className="text-[#FFDE00]" strokeWidth={3} /> 연도별 누적 기록 통합 입력
+                  <Calendar className="text-[#FFDE00]" strokeWidth={3} /> ?곕룄蹂??꾩쟻 湲곕줉 ?듯빀 ?낅젰
                 </h3>
                 <div className="space-y-5 bg-[#F1F5F9] p-6 rounded-[2.5rem] border-4 border-black shadow-inner">
                   <div className="grid grid-cols-2 gap-4">
                     <div className="space-y-1">
-                      <label className="text-[10px] font-black uppercase text-slate-400 ml-2">연도 선택</label>
+                      <label className="text-[10px] font-black uppercase text-slate-400 ml-2">?곕룄 ?좏깮</label>
                       <select 
                         className="w-full h-14 bg-white border-4 border-black rounded-2xl px-3 font-black text-lg outline-none focus:translate-y-[-2px] transition-all cursor-pointer"
                         value={yearlyInput.year}
                         onChange={(e)=>setYearlyInput({...yearlyInput, year: e.target.value})}
                       >
-                        <option value="2024">2024년</option>
-                        <option value="2025">2025년</option>
-                        <option value="2026">2026년</option>
+                        <option value="2024">2024??/option>
+                        <option value="2025">2025??/option>
+                        <option value="2026">2026??/option>
                       </select>
                     </div>
                     <div className="space-y-1">
-                      <label className="text-[10px] font-black uppercase text-slate-400 ml-2">대상 회원</label>
+                      <label className="text-[10px] font-black uppercase text-slate-400 ml-2">????뚯썝</label>
                       <select 
                         className="w-full h-14 bg-white border-4 border-black rounded-2xl px-3 font-black text-lg outline-none focus:translate-y-[-2px] transition-all cursor-pointer"
                         value={yearlyInput.userId}
@@ -1666,7 +1563,7 @@ const PIER24App = () => {
                   </div>
                   
                   <div className="space-y-1">
-                    <label className="text-[10px] font-black uppercase text-slate-400 ml-2">총 달린 거리 (KM)</label>
+                    <label className="text-[10px] font-black uppercase text-slate-400 ml-2">珥??щ┛ 嫄곕━ (KM)</label>
                     <div className="relative group">
                       <input 
                         type="number"
@@ -1684,14 +1581,14 @@ const PIER24App = () => {
                     className="w-full bg-[#FFDE00] border-4 border-black py-5 rounded-2xl font-black text-xl shadow-[6px_6px_0_0_#000] active:shadow-none active:translate-y-1 hover:translate-x-[-2px] transition-all flex items-center justify-center gap-2"
                   >
                     <CheckSquare size={24} strokeWidth={3} />
-                    기록 확정 및 반영하기
+                    湲곕줉 ?뺤젙 諛?諛섏쁺?섍린
                   </button>
                 </div>
                 <div className="bg-yellow-50 border-4 border-black rounded-2xl p-5 flex gap-4 items-start shadow-[4px_4px_0_0_#000]">
                   <AlertCircle className="text-orange-500 shrink-0 mt-1" size={24} />
                   <div>
-                    <p className="text-sm font-black text-black">주의사항</p>
-                    <p className="text-[11px] font-bold text-slate-600 mt-1 leading-relaxed">연도별 기록 입력 시 해당 연도의 마일리지가 즉시 갱신되며, 등급(엘리트/마스터/챌린저) 심사에 즉각 반영됩니다.</p>
+                    <p className="text-sm font-black text-black">二쇱쓽?ы빆</p>
+                    <p className="text-[11px] font-bold text-slate-600 mt-1 leading-relaxed">?곕룄蹂?湲곕줉 ?낅젰 ???대떦 ?곕룄??留덉씪由ъ?媛 利됱떆 媛깆떊?섎ŉ, ?깃툒(?섎━??留덉뒪??梨뚮┛?) ?ъ궗??利됯컖 諛섏쁺?⑸땲??</p>
                   </div>
                 </div>
               </div>
@@ -1716,26 +1613,26 @@ const PIER24App = () => {
               <div className="w-20 h-20 bg-[#45C4FF] rounded-[2rem] border-4 border-black shadow-[6px_6px_0_0_#000] flex items-center justify-center mb-4 rotate-[-6deg]">
                 <UserPlus size={40} className="text-black" strokeWidth={3} />
               </div>
-              <h2 className="text-4xl font-black text-black tracking-tighter leading-tight">회원 가입 신청</h2>
-              <p className="text-slate-400 font-bold mt-1 text-lg">PIER24 런닝팀의 새로운 멤버가 되어보세요!</p>
+              <h2 className="text-4xl font-black text-black tracking-tighter leading-tight">?뚯썝 媛???좎껌</h2>
+              <p className="text-slate-400 font-bold mt-1 text-lg">PIER24 ?곕떇????덈줈??硫ㅻ쾭媛 ?섏뼱蹂댁꽭??</p>
             </div>
 
             <div className="space-y-6">
               <div className="space-y-2">
-                <label className="text-xs font-black uppercase text-slate-500 ml-2 tracking-widest">소속 (부서명)</label>
+                <label className="text-xs font-black uppercase text-slate-500 ml-2 tracking-widest">?뚯냽 (遺?쒕챸)</label>
                 <input 
                   type="text"
-                  placeholder="예: 전략기획팀"
+                  placeholder="?? ?꾨왂湲고쉷?"
                   className="w-full h-16 bg-[#F8FAFC] border-4 border-black rounded-2xl px-6 font-black text-xl outline-none focus:bg-white focus:shadow-[6px_6px_0_0_#45C4FF] transition-all placeholder:text-slate-300"
                   value={signupForm.department}
                   onChange={(e) => setSignupForm({...signupForm, department: e.target.value})}
                 />
               </div>
               <div className="space-y-2">
-                <label className="text-xs font-black uppercase text-slate-500 ml-2 tracking-widest">성함</label>
+                <label className="text-xs font-black uppercase text-slate-500 ml-2 tracking-widest">?깊븿</label>
                 <input 
                   type="text"
-                  placeholder="실명을 입력해주세요"
+                  placeholder="?ㅻ챸???낅젰?댁＜?몄슂"
                   className="w-full h-16 bg-[#F8FAFC] border-4 border-black rounded-2xl px-6 font-black text-xl outline-none focus:bg-white focus:shadow-[6px_6px_0_0_#45C4FF] transition-all placeholder:text-slate-300"
                   value={signupForm.name}
                   onChange={(e) => setSignupForm({...signupForm, name: e.target.value})}
@@ -1746,10 +1643,10 @@ const PIER24App = () => {
                 onClick={handleRequestSignup}
                 className="w-full bg-[#00E676] border-8 border-black py-6 rounded-[2rem] font-black text-2xl shadow-[8px_8px_0_0_#000] active:shadow-none active:translate-y-2 hover:translate-x-[-4px] transition-all flex items-center justify-center gap-3 mt-4"
               >
-                가입 승인 요청하기
+                媛???뱀씤 ?붿껌?섍린
               </button>
               
-              <p className="text-center text-[10px] font-bold text-slate-400 uppercase tracking-widest">관리자 승인 후 정식 멤버로 등록됩니다</p>
+              <p className="text-center text-[10px] font-bold text-slate-400 uppercase tracking-widest">愿由ъ옄 ?뱀씤 ???뺤떇 硫ㅻ쾭濡??깅줉?⑸땲??/p>
             </div>
           </div>
         </div>
@@ -1779,3 +1676,4 @@ const PIER24App = () => {
 };
 
 export default PIER24App;
+
