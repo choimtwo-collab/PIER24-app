@@ -75,18 +75,18 @@ const SHOP_ITEMS = [
 // --- Mock Data ---
 const INITIAL_USERS = [
   {
-    id: '86645223-a009-4559-a495-e25fcce9bf31',
+    id: 1,
     name: '김동국',
     department: '의사',
     mileage2025: 2200,
     currentMileage: 450,
     records: [
-      { id: 'rec-1', type: 'monthly', period: '2026-01', distance: 150 },
-      { id: 'rec-2', type: 'monthly', period: '2026-02', distance: 180 },
-      { id: 'rec-3', type: 'monthly', period: '2026-03', distance: 120 },
+      { id: 11, type: 'monthly', period: '2026-01', distance: 150 },
+      { id: 12, type: 'monthly', period: '2026-02', distance: 180 },
+      { id: 13, type: 'monthly', period: '2026-03', distance: 120 },
     ],
     marathons: [
-      { id: 'm-1', name: '서울국제마라톤', date: '2025-03-16', course: 'Full' }
+      { id: 101, name: '서울국제마라톤', date: '2025-03-16', course: 'Full' }
     ],
     trainingAttendance: [true, true, false, true, true, true, true, true],
     badges: ['Full Course', 'Weekly Master', 'ELITE'],
@@ -95,18 +95,18 @@ const INITIAL_USERS = [
     equipped: { character: 'char_cheetah', head: 'head_goggles', body: null, pants: null, shoes: 'shoes_rocket' }
   },
   {
-    id: '86645223-a009-4559-a495-e25fcce9bf32',
+    id: 2,
     name: '이지혜',
     department: '간호사',
     mileage2025: 1200,
     currentMileage: 320,
     records: [
-      { id: 'rec-4', type: 'monthly', period: '2026-01', distance: 100 },
-      { id: 'rec-5', type: 'monthly', period: '2026-02', distance: 110 },
-      { id: 'rec-6', type: 'monthly', period: '2026-03', distance: 110 },
+      { id: 21, type: 'monthly', period: '2026-01', distance: 100 },
+      { id: 22, type: 'monthly', period: '2026-02', distance: 110 },
+      { id: 23, type: 'monthly', period: '2026-03', distance: 110 },
     ],
     marathons: [
-      { id: 'm-2', name: '고양하프마라톤', date: '2025-03-30', course: 'Half' }
+      { id: 102, name: '고양하프마라톤', date: '2025-03-30', course: 'Half' }
     ],
     trainingAttendance: [true, true, true, true, true, false, true, true],
     badges: ['Half Runner', 'Steady Runner'],
@@ -115,18 +115,18 @@ const INITIAL_USERS = [
     equipped: { character: 'char_rabbit', head: null, body: 'body_shirt', pants: 'pants_leggings', shoes: null }
   },
   {
-    id: '86645223-a009-4559-a495-e25fcce9bf33',
+    id: 3,
     name: '박철수',
     department: '행정직',
     mileage2025: 800,
     currentMileage: 280,
     records: [
-      { id: 'rec-7', type: 'monthly', period: '2026-01', distance: 80 },
-      { id: 'rec-8', type: 'monthly', period: '2026-02', distance: 90 },
-      { id: 'rec-9', type: 'monthly', period: '2026-03', distance: 110 },
+      { id: 31, type: 'monthly', period: '2026-01', distance: 80 },
+      { id: 32, type: 'monthly', period: '2026-02', distance: 90 },
+      { id: 33, type: 'monthly', period: '2026-03', distance: 110 },
     ],
     marathons: [
-      { id: 'm-3', name: '동국대사랑10K', date: '2025-02-15', course: '10km' }
+      { id: 103, name: '동국대사랑10K', date: '2025-02-15', course: '10km' }
     ],
     trainingAttendance: [true, false, true, true, false, true, true, false],
     badges: ['10K Finisher', 'Beginner Luck'],
@@ -135,15 +135,15 @@ const INITIAL_USERS = [
     equipped: { character: 'char_turtle', head: null, body: null, shoes: null }
   },
   {
-    id: '86645223-a009-4559-a495-e25fcce9bf34',
+    id: 4,
     name: '최은정',
     department: '기술직',
     mileage2025: 300,
     currentMileage: 150,
     records: [
-      { id: 'rec-10', type: 'monthly', period: '2026-01', distance: 50 },
-      { id: 'rec-11', type: 'monthly', period: '2026-02', distance: 40 },
-      { id: 'rec-12', type: 'monthly', period: '2026-03', distance: 60 },
+      { id: 41, type: 'monthly', period: '2026-01', distance: 50 },
+      { id: 42, type: 'monthly', period: '2026-02', distance: 40 },
+      { id: 43, type: 'monthly', period: '2026-03', distance: 60 },
     ],
     marathons: [],
     trainingAttendance: [true, true, true, true, true, true, true, true],
@@ -245,9 +245,8 @@ const AvatarRenderer = ({ user, className }) => {
 };
 
 const CustomRunnerBar = (props) => {
-  const { x, y, width, height, value } = props;
-  const radius = 8;
-  if (!value || isNaN(y)) return null;
+  const { x, y, width, height, value, radius = 5, fill = "#FFDE00" } = props;
+  if (value === undefined || isNaN(y)) return null;
 
   // Ensure the text fits inside, else put it just above the bar
   const textY = height < 24 ? y - 8 : y + 20;
@@ -256,11 +255,11 @@ const CustomRunnerBar = (props) => {
     <g>
       <path 
         d={`M${x},${y + height} L${x},${y + radius} Q${x},${y} ${x + radius},${y} L${x + width - radius},${y} Q${x + width},${y} ${x + width},${y + radius} L${x + width},${y + height} Z`} 
-        fill="#FFDE00" 
+        fill={fill} 
         stroke="#000" 
         strokeWidth={3} 
       />
-      <text x={x + width / 2} y={textY} fill="#000" fontSize="14" fontWeight="900" textAnchor="middle">{value}</text>
+      {value > 0 && <text x={x + width / 2} y={textY} fill="#000" fontSize="12" fontStyle="italic" fontWeight="900" textAnchor="middle">{value}</text>}
     </g>
   );
 };
@@ -354,6 +353,12 @@ const PIER24App = () => {
           .select('*');
         if (mrError) throw mrError;
 
+        // Fetch all training records
+        const { data: trainingRecs, error: trError } = await supabase
+          .from('training_records')
+          .select('*');
+        if (trError) throw trError;
+
         // Map Supabase data to local app state structure
         const formattedUsers = members.map(m => ({
           id: m.id,
@@ -383,23 +388,29 @@ const PIER24App = () => {
               date: mr.date,
               course: mr.course,
               record: mr.record
+            })),
+          trainingRecords: (trainingRecs || [])
+            .filter(tr => tr.member_id === m.id)
+            .map(tr => ({
+              id: tr.id,
+              date: tr.date,
+              location: tr.location
             }))
         }));
 
         setUsers(formattedUsers.length > 0 ? formattedUsers : INITIAL_USERS);
       } catch (err) {
-        console.error('Supabase 데이터 로딩 실패 상세:', err);
-        showToast('DB 데이터를 불러오는 데 실패했습니다. 콘솔을 확인해주세요.');
+        console.error('Supabase fetch error:', err);
         setUsers(INITIAL_USERS);
-      } finally {   };
+      }
     };
     fetchSupabaseData();
   }, []);
 
   const currentUser = users[currentUserIndex];
   const [signupRequests, setSignupRequests] = useState([
-    { id: 'req-1', name: '정민수', department: '응급의학과', time: '1시간 전' },
-    { id: 'req-2', name: '강하늘', department: '외래간호팀', time: '3시간 전' }
+    { id: 1001, name: '정민수', department: '응급의학과', time: '1시간 전' },
+    { id: 1002, name: '강하늘', department: '외래간호팀', time: '3시간 전' }
   ]);
   const [showSignupModal, setShowSignupModal] = useState(false);
   const [signupForm, setSignupForm] = useState({ name: '', department: '' });
@@ -412,7 +423,7 @@ const PIER24App = () => {
   const [recordTab, setRecordTab] = useState('running');
   const [recordType, setRecordType] = useState('daily');
 
-  const [yearlyInput, setYearlyInput] = useState({ year: '2025', userId: '86645223-a009-4559-a495-e25fcce9bf31', distance: '' });
+  const [yearlyInput, setYearlyInput] = useState({ year: '2025', userId: 1, distance: '' });
 
   const handleUpdateUserMileage25 = async (userId, newMileage) => {
     const value = parseFloat(newMileage) || 0;
@@ -531,8 +542,13 @@ const PIER24App = () => {
     return `${d.getFullYear()}-W${currentWeek.toString().padStart(2, '0')}`;
   };
 
-  const aggregateRecords = (records) => {
-    const chartData = Array.from({ length: 12 }, (_, i) => ({ month: `${i + 1}월`, distance: 0 }));
+  const aggregateRecords = (records, marathons = [], trainingRecords = []) => {
+    const chartData = Array.from({ length: 12 }, (_, i) => ({ 
+      month: `${i + 1}월`, 
+      distance: 0, 
+      trainingCount: 0, 
+      marathonCount: 0 
+    }));
     const monthGroups = {};
     
     records.forEach(r => {
@@ -566,12 +582,28 @@ const PIER24App = () => {
       const mIndex = parseInt(mStr.split('-')[1], 10) - 1;
       if (mIndex >= 0 && mIndex < 12) chartData[mIndex].distance = parseFloat(total.toFixed(1));
     });
+
+    // Count training attendance
+    (trainingRecords || []).forEach(tr => {
+      const mIdx = new Date(tr.date).getMonth();
+      if (mIdx >= 0 && mIdx < 12) chartData[mIdx].trainingCount += 1;
+    });
+
+    // Count marathon completions
+    (marathons || []).forEach(mr => {
+      const mIdx = new Date(mr.date).getMonth();
+      if (mIdx >= 0 && mIdx < 12) chartData[mIdx].marathonCount += 1;
+    });
     
     return chartData;
   };
 
   const chartLogs = useMemo(() => {
-    return aggregateRecords(currentUser?.records || []);
+    return aggregateRecords(
+      currentUser?.records || [], 
+      currentUser?.marathons || [], 
+      currentUser?.trainingRecords || []
+    );
   }, [currentUser]);
 
   const showToast = (message) => {
@@ -661,11 +693,38 @@ const PIER24App = () => {
 
   const handleAddTraining = async () => {
     if (!trainingInput.location) { showToast('장소나 훈련 내용을 입력해주세요!'); return; }
+    
+    // Save to Supabase training_records table
+    const { data: newTr, error: trError } = await supabase
+      .from('training_records')
+      .insert({
+        member_id: currentUser.id,
+        date: trainingInput.date,
+        location: trainingInput.location
+      })
+      .select()
+      .single();
+
+    if (trError) {
+      console.error(trError);
+      showToast('DB 저장 오류');
+      return;
+    }
+
     const earnedCoins = 500;
     const newAttendance = [...(currentUser.trainingAttendance || []), true];
     const newCoins = (currentUser.coins || 0) + earnedCoins;
+    
+    // Update member's coins and local state
     await supabase.from('members').update({ training_attendance: newAttendance, coins: newCoins }).eq('id', currentUser.id);
-    setUsers(prev => prev.map((u, i) => i === currentUserIndex ? { ...u, coins: newCoins, trainingAttendance: newAttendance } : u));
+    
+    setUsers(prev => prev.map((u, i) => i === currentUserIndex ? { 
+      ...u, 
+      coins: newCoins, 
+      trainingAttendance: newAttendance,
+      trainingRecords: [...(u.trainingRecords || []), { id: newTr.id, date: trainingInput.date, location: trainingInput.location }]
+    } : u));
+    
     showToast('💪 훈련 참석 등록 완!');
     handleReward(earnedCoins);
     setTrainingInput({ ...trainingInput, location: '' });
@@ -958,7 +1017,9 @@ const PIER24App = () => {
                       {gradeDesc}
                     </span>
                   </div>
-                  <h2 className="text-5xl font-black tracking-tight text-black" style={{ textShadow: '2px 2px 0px #fff, 4px 4px 0px #45C4FF' }}>{currentUser?.name} 님</h2>
+                  <h2 className="text-5xl font-black tracking-tight text-black" style={{ textShadow: '2px 2px 0px #fff, 4px 4px 0px #45C4FF' }}>
+                    {currentUser ? `${currentUser.name} 님` : '로딩 중...'}
+                  </h2>
                   <p className="text-lg font-black text-slate-600 uppercase">2025년: {currentUser?.mileage2025}km → 2026년 목표: {targetMileage26}km</p>
                 </div>
                 <div className="relative w-20 h-20 shrink-0 z-10 flex flex-col items-center rotate-[-3deg] hover:rotate-6 transition-transform">
@@ -994,10 +1055,18 @@ const PIER24App = () => {
               </div>
               <div className="h-48">
                 <ResponsiveContainer width="100%" height="100%">
-                  <BarChart data={chartLogs}>
+                  <BarChart data={chartLogs} margin={{ top: 20, right: 10, left: -20, bottom: 0 }}>
                     <CartesianGrid strokeDasharray="3 3" vertical={false} stroke="#000" />
-                    <XAxis dataKey="month" axisLine={false} tickLine={false} tick={{ fontSize: 12, fontWeight: 'bold' }} />
-                    <Bar dataKey="distance" isAnimationActive={false} shape={<CustomRunnerBar />} />
+                    <XAxis dataKey="month" axisLine={false} tickLine={false} tick={{ fontSize: 11, fontWeight: 'bold' }} />
+                    <YAxis axisLine={false} tickLine={false} tick={{ fontSize: 10, fontWeight: 'bold' }} />
+                    <Tooltip 
+                      cursor={{ fill: 'rgba(0,0,0,0.05)' }}
+                      contentStyle={{ borderRadius: '16px', border: '4px solid black', fontWeight: 'black' }}
+                    />
+                    <Legend wrapperStyle={{ fontSize: '10px', fontWeight: '900', paddingTop: '10px' }} />
+                    <Bar name="러닝 (KM)" dataKey="distance" isAnimationActive={false} shape={<CustomRunnerBar fill="#FFDE00" />} />
+                    <Bar name="훈련 (회)" dataKey="trainingCount" isAnimationActive={false} shape={<CustomRunnerBar fill="#00E5FF" />} />
+                    <Bar name="완주 (회)" dataKey="marathonCount" isAnimationActive={false} shape={<CustomRunnerBar fill="#FF3366" />} />
                   </BarChart>
                 </ResponsiveContainer>
               </div>
@@ -1182,56 +1251,79 @@ const PIER24App = () => {
                 <h3 className="font-black text-2xl text-black flex items-center gap-2 uppercase tracking-tighter" style={{ textShadow: '2px 2px 0px #8AD9FF' }}>
                   <Calendar className="text-blue-600 drop-shadow-[2px_2px_0_#000]" /> 최근 활동 일지
                 </h3>
-                <span className="bg-blue-100 text-blue-600 px-3 py-1 rounded-full text-xs font-black border-2 border-blue-200">RECENT 5</span>
+                <span className="bg-blue-100 text-blue-600 px-3 py-1 rounded-full text-xs font-black border-2 border-blue-200">UNIFIED FEED</span>
               </div>
               
               <div className="space-y-4">
-                {(currentUser?.records || []).slice().reverse().slice(0, 5).map(record => (
-                  <div key={record.id} className="group bg-white border-4 border-black rounded-3xl p-5 flex justify-between items-center shadow-[6px_6px_0_0_#000] hover:translate-x-2 transition-all relative overflow-hidden">
-                    <div className={`absolute top-0 left-0 w-2 h-full ${record.type === 'daily' ? 'bg-[#00E676]' : record.type === 'weekly' ? 'bg-[#FFDE00]' : 'bg-[#45C4FF]'}`} />
-                    <div className="flex items-center gap-5">
-                      <div className={`w-14 h-14 rounded-2xl border-4 border-black flex items-center justify-center text-2xl shadow-[3px_3px_0_0_#000] transition-transform group-hover:rotate-6 ${
-                        record.type === 'daily' ? 'bg-[#E8F5E9] text-green-700' : 
-                        record.type === 'weekly' ? 'bg-[#FFF9C4] text-orange-700' : 
-                        'bg-[#E1F5FE] text-blue-700'
-                      }`}>
-                        {record.type === 'daily' ? 'D' : record.type === 'weekly' ? 'W' : 'M'}
-                      </div>
-                      <div>
-                        <div className="flex items-center gap-2 mb-1">
-                          <span className="text-xs font-black text-slate-400">{record.period}</span>
-                          <span className="w-1 h-1 bg-slate-200 rounded-full" />
-                          <span className="text-[10px] font-black uppercase text-slate-400 tracking-widest">{record.type === 'daily' ? '일자별' : record.type === 'weekly' ? '주별' : '월별'}</span>
+                {(() => {
+                  const allRecords = [
+                    ...(currentUser?.records || []).map(r => ({ ...r, eventType: 'running', sortDate: r.period })),
+                    ...(currentUser?.marathons || []).map(m => ({ ...m, eventType: 'marathon', sortDate: m.date })),
+                    ...(currentUser?.trainingRecords || []).map(t => ({ ...t, eventType: 'training', sortDate: t.date }))
+                  ].sort((a, b) => new Date(b.sortDate) - new Date(a.sortDate));
+
+                  if (allRecords.length === 0) {
+                    return (
+                      <div className="text-center py-16 bg-white/50 border-4 border-dashed border-slate-300 rounded-[2.5rem] flex flex-col items-center gap-3">
+                        <div className="w-16 h-16 bg-slate-100 rounded-full flex items-center justify-center text-slate-300">
+                          <FileText size={32} />
                         </div>
-                        <p className="text-3xl font-black tracking-tighter text-black">{record.distance} <span className="text-lg text-slate-300">KM</span></p>
+                        <p className="text-slate-400 font-black text-lg">아직 기록이 없습니다.<br/>첫 활동을 등록해보세요!</p>
+                      </div>
+                    );
+                  }
+
+                  return allRecords.slice(0, 7).map(ev => (
+                    <div key={`${ev.eventType}-${ev.id}`} className="group bg-white border-4 border-black rounded-3xl p-5 flex justify-between items-center shadow-[6px_6px_0_0_#000] hover:translate-x-2 transition-all relative overflow-hidden">
+                      <div className={`absolute top-0 left-0 w-2 h-full ${
+                        ev.eventType === 'running' ? 'bg-[#00E676]' : 
+                        ev.eventType === 'marathon' ? 'bg-[#FF3366]' : 'bg-[#00E5FF]'
+                      }`} />
+                      <div className="flex items-center gap-5">
+                        <div className={`w-14 h-14 rounded-2xl border-4 border-black flex items-center justify-center text-2xl shadow-[3px_3px_0_0_#000] transition-transform group-hover:rotate-6 ${
+                          ev.eventType === 'running' ? 'bg-[#E8F5E9] text-green-700' : 
+                          ev.eventType === 'marathon' ? 'bg-[#FCE4EC] text-pink-700' : 
+                          'bg-[#E0F7FA] text-cyan-700'
+                        }`}>
+                          {ev.eventType === 'running' ? <Footprints /> : ev.eventType === 'marathon' ? <Trophy /> : <CheckSquare />}
+                        </div>
+                        <div>
+                          <div className="flex items-center gap-2 mb-1">
+                            <span className="text-xs font-black text-slate-400">{ev.sortDate}</span>
+                            <span className="w-1 h-1 bg-slate-200 rounded-full" />
+                            <span className="text-[10px] font-black uppercase text-slate-400 tracking-widest">
+                              {ev.eventType === 'running' ? '러닝' : ev.eventType === 'marathon' ? '마라톤' : '정기 훈련'}
+                            </span>
+                          </div>
+                          <p className="text-xl font-black tracking-tighter text-black">
+                            {ev.eventType === 'running' ? `${ev.distance} KM` : ev.eventType === 'marathon' ? ev.name : ev.location}
+                          </p>
+                        </div>
+                      </div>
+                      <div className="flex gap-3">
+                        <button 
+                          onClick={async () => {
+                            if (ev.eventType === 'running') {
+                              await handleDeleteRecord(ev.id);
+                            } else if (ev.eventType === 'marathon') {
+                              await supabase.from('marathon_records').delete().eq('id', ev.id);
+                              setUsers(prev => prev.map(u => u.id === currentUser.id ? { ...u, marathons: u.marathons.filter(m => m.id !== ev.id) } : u));
+                              showToast('마라톤 기록 삭제됨');
+                            } else if (ev.eventType === 'training') {
+                              await supabase.from('training_records').delete().eq('id', ev.id);
+                              setUsers(prev => prev.map(u => u.id === currentUser.id ? { ...u, trainingRecords: u.trainingRecords.filter(t => t.id !== ev.id) } : u));
+                              showToast('훈련 기록 삭제됨');
+                            }
+                          }}
+                          className="w-12 h-12 bg-white border-4 border-black rounded-xl flex items-center justify-center hover:bg-black hover:text-[#FF3366] transition-all hover:rotate-6 shadow-[2px_2px_0_0_#000] active:shadow-none active:translate-y-1 group/del"
+                          title="삭제"
+                        >
+                          <Trash2 size={20} className="text-red-500 group-hover/del:text-[#FF3366]" strokeWidth={3} />
+                        </button>
                       </div>
                     </div>
-                    <div className="flex gap-3">
-                      <button 
-                        onClick={() => startEditRecord(record)}
-                        className="w-12 h-12 bg-white border-4 border-black rounded-xl flex items-center justify-center hover:bg-black hover:text-[#FFDE00] transition-all hover:-rotate-6 shadow-[2px_2px_0_0_#000] active:shadow-none active:translate-y-1"
-                        title="수정"
-                      >
-                        <Settings size={20} strokeWidth={3} />
-                      </button>
-                      <button 
-                        onClick={() => handleDeleteRecord(record.id)}
-                        className="w-12 h-12 bg-white border-4 border-black rounded-xl flex items-center justify-center hover:bg-black hover:text-[#FF3366] transition-all hover:rotate-6 shadow-[2px_2px_0_0_#000] active:shadow-none active:translate-y-1 group/del"
-                        title="삭제"
-                      >
-                        <Trash2 size={20} className="text-red-500 group-hover/del:text-[#FF3366]" strokeWidth={3} />
-                      </button>
-                    </div>
-                  </div>
-                ))}
-                {(currentUser?.records || []).length === 0 && (
-                  <div className="text-center py-16 bg-white/50 border-4 border-dashed border-slate-300 rounded-[2.5rem] flex flex-col items-center gap-3">
-                    <div className="w-16 h-16 bg-slate-100 rounded-full flex items-center justify-center text-slate-300">
-                      <FileText size={32} />
-                    </div>
-                    <p className="text-slate-400 font-black text-lg">아직 기록이 없습니다.<br/>첫 달리기를 등록해 보세요!</p>
-                  </div>
-                )}
+                  ));
+                })()}
               </div>
             </div>
           </div>
